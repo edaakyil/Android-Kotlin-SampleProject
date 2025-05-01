@@ -39,9 +39,7 @@ class PostalCodeActivity : AppCompatActivity() {
             insets
         }
 
-        val call = postalCodeService.findByPostalCode("csystem", "tr", "67000")
-        //val call = postalCodeService.findByPostalCode("csystem", "tr", "34843") // for demo
-        //val call = postalCodeService.findByPostalCode("csyste", "tr", "34843") // for demo to display unsuccessful operation
+        val call = postalCodeService.findByPostalCode("csystem", "tr", "34843")
         call.enqueue(postalCodeCallback())
     }
 
@@ -62,6 +60,9 @@ class PostalCodeActivity : AppCompatActivity() {
                     Toast.makeText(this@PostalCodeActivity, "Unsuccessful operation", Toast.LENGTH_LONG).show()
                     return
                 }
+
+                Log.i("Response:", response.raw().toString())
+                Toast.makeText(this@PostalCodeActivity, response.raw().toString(), Toast.LENGTH_LONG).show()
 
                 response.body()!!.postalCodes.forEach { Toast.makeText(this@PostalCodeActivity, it.placeName, Toast.LENGTH_LONG).show() }
             }
