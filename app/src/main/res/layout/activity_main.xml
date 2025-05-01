@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+    <import type="com.edaakyil.android.kotlin.app.sample.MainActivity"/>
+        <variable name="activity" type="MainActivity"/>
+        <variable name="dateTime" type="String"/>
+        <variable name="dateTimeEdaLib" type="String"/>
+    </data>
+
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/mainActivityMainLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="32dp"
+        tools:context=".MainActivity">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{dateTime}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{dateTimeEdaLib}" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/payment_page_button_text"
+            android:onClick="@{ _ -> activity.onPaymentButtonClicked() }"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/postal_code_page_button_text"
+            android:onClick="@{ _ -> activity.onPostalCodeButtonClicked() }"/>
+
+    </LinearLayout>
+</layout>

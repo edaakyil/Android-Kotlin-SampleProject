@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SampleApp</string>
+    <string name="date_time_text">Eda DateTime lib: %s</string>
+
+    <!-- Button Text -->
+    <string name="payment_page_button_text">Payment Page</string>
+    <string name="postal_code_page_button_text">Postal Code Page</string>
+</resources>
