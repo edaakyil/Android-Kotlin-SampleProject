@@ -61,9 +61,8 @@ class PostalCodeActivity : AppCompatActivity() {
                     return
                 }
 
-                Log.i("Response:", response.raw().toString())
-                Toast.makeText(this@PostalCodeActivity, response.raw().toString(), Toast.LENGTH_LONG).show()
-
+                Log.i("Response-Raw", response.raw().toString())
+                response.headers().names().forEach { Log.i("Response-Headers", it) }
                 response.body()!!.postalCodes.forEach { Toast.makeText(this@PostalCodeActivity, it.placeName, Toast.LENGTH_LONG).show() }
             }
 
