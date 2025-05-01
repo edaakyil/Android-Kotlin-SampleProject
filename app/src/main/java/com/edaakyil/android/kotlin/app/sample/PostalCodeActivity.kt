@@ -39,7 +39,7 @@ class PostalCodeActivity : AppCompatActivity() {
             insets
         }
 
-        val call = postalCodeService.findByPostalCode("csystem", "tr", "34843")
+        val call = postalCodeService.findByPostalCode("demo", "tr", "34843")
         call.enqueue(postalCodeCallback())
     }
 
@@ -55,14 +55,19 @@ class PostalCodeActivity : AppCompatActivity() {
     private fun postalCodeCallback(): Callback<PostalCodes> {
         return object : Callback<PostalCodes> {
             override fun onResponse(call: Call<PostalCodes?>, response: Response<PostalCodes?>) {
+                Log.i("Response-Raw", response.raw().toString())
+
                 if (response.code() != 200) {
                     Log.e("Status", response.code().toString())
                     Toast.makeText(this@PostalCodeActivity, "Unsuccessful operation", Toast.LENGTH_LONG).show()
                     return
                 }
 
-                Log.i("Response-Raw", response.raw().toString())
-                response.headers().names().forEach { Log.i("Response-Headers", it) }
+                if (response.body()?.postalCodes == null) {
+                    Toast.makeText(this@PostalCodeActivity, "Limit exhausted", Toast.LENGTH_LONG).show()
+                    return
+                }
+
                 response.body()!!.postalCodes.forEach { Toast.makeText(this@PostalCodeActivity, it.placeName, Toast.LENGTH_LONG).show() }
             }
 
