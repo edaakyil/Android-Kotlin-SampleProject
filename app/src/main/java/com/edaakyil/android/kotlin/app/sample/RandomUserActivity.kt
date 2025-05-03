@@ -99,9 +99,8 @@ class RandomUserActivity : AppCompatActivity() {
                 throw NumberFormatException("Invalid value")
             }
 
-            (1..count).forEach {
-                randomUserService.findUser().enqueue(findRandomUserCallback())
-            }
+            randomUserService.findUser(count).enqueue(findRandomUserCallback())
+
         } catch (ex: NumberFormatException) {
             Log.e("NumberFormatException", ex.message!!)
             Toast.makeText(this, R.string.message_positive, Toast.LENGTH_LONG).show()
