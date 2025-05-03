@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
+import com.edaakyil.android.kotlin.app.sample.api.constant.STATUS_OK
 import com.edaakyil.android.kotlin.app.sample.api.geonames.postalcodesearch.dto.PostalCodes
 import com.edaakyil.android.kotlin.app.sample.databinding.ActivityPostalCodeBinding
 import com.edaakyil.android.kotlin.app.sample.api.geonames.postalcodesearch.service.IPostalCodeService
@@ -39,7 +40,7 @@ class PostalCodeActivity : AppCompatActivity() {
             insets
         }
 
-        val call = postalCodeService.findByPostalCode("demo", "tr", "34843")
+        val call = postalCodeService.findByPostalCode("csystem", "tr", "34843")
         call.enqueue(postalCodeCallback())
     }
 
@@ -57,7 +58,7 @@ class PostalCodeActivity : AppCompatActivity() {
             override fun onResponse(call: Call<PostalCodes?>, response: Response<PostalCodes?>) {
                 Log.i("Response-Raw", response.raw().toString())
 
-                if (response.code() != 200) {
+                if (response.code() != STATUS_OK) {
                     Log.e("Status", response.code().toString())
                     Toast.makeText(this@PostalCodeActivity, "Unsuccessful operation", Toast.LENGTH_LONG).show()
                     return

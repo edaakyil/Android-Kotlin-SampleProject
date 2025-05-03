@@ -68,4 +68,8 @@ class MainActivity : AppCompatActivity() {
     fun onPostalCodeButtonClicked() {
         Intent(this, PostalCodeActivity::class.java).apply{ startActivity(this) }
     }
+
+    fun onRandomUserButtonClicked() {
+        Intent(this, RandomUserActivity::class.java).apply{ startActivity(this) }
+    }
 }

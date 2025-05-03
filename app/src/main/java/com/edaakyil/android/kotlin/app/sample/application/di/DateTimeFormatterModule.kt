@@ -1,8 +1,6 @@
-package com.edaakyil.android.kotlin.app.sample.api.di.module
+package com.edaakyil.android.kotlin.app.sample.application.di
 
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
