@@ -2,24 +2,24 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="com.edaakyil.android.kotlin.app.sample.api.randomuser.me.dto.RandomUser"/>
-        <import type="com.edaakyil.android.kotlin.app.sample.RandomUserActivity"/>
+        <import type="com.edaakyil.android.kotlin.app.sample.RandomUsersActivity"/>
         <import type="android.widget.ArrayAdapter"/>
 
         <variable name="adapter" type="ArrayAdapter&lt;RandomUser&gt;"/>
-        <variable name="activity" type="RandomUserActivity"/>
+        <variable name="activity" type="RandomUsersActivity"/>
         <variable name="count" type="String"/>
     </data>
 
     <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/randomUserActivityMainLayout"
+        android:id="@+id/randomUsersActivityMainLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="32dp"
         android:layout_marginHorizontal="32dp"
-        tools:context=".RandomUserActivity">
+        tools:context=".RandomUsersActivity">
 
         <EditText
             android:layout_width="match_parent"

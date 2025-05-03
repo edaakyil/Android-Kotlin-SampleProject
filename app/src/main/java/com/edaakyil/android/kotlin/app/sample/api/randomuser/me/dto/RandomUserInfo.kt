@@ -1,6 +1,7 @@
 package com.edaakyil.android.kotlin.app.sample.api.randomuser.me.dto
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class RandomUserInfo(
     @SerializedName("results") val users: List<RandomUser>,
@@ -27,7 +28,7 @@ data class RandomUser(
     @SerializedName("id") val id: Id,
     @SerializedName("picture") val picture: Picture,
     @SerializedName("nat") val nat: String
-) {
+) : Serializable {
     override fun toString() = "${name.title} ${name.first} ${name.last}"
 }
 
@@ -35,7 +36,7 @@ data class Name(
     @SerializedName("title") val title: String,
     @SerializedName("first") val first: String,
     @SerializedName("last") val last: String
-)
+) : Serializable
 
 data class Location(
     @SerializedName("street") val street: Street,
@@ -45,22 +46,22 @@ data class Location(
     @SerializedName("postcode") val postcode: Long,
     @SerializedName("coordinates") val coordinates: Coordinates,
     @SerializedName("timezone") val timezone: Timezone,
-)
+) : Serializable
 
 data class Street(
     @SerializedName("number") val number: Long,
     @SerializedName("name") val name: String
-)
+) : Serializable
 
 data class Coordinates(
     @SerializedName("latitude") val latitude: String,
     @SerializedName("longitude") val longitude: String
-)
+) : Serializable
 
 data class Timezone(
     @SerializedName("offset") val offset: String,
     @SerializedName("description") val description: String
-)
+) : Serializable
 
 data class Login(
     @SerializedName("uuid") val uuid: String,
@@ -70,26 +71,26 @@ data class Login(
     @SerializedName("md5") val md5: String,
     @SerializedName("sha1") val sha1: String,
     @SerializedName("sha256") val sha256: String
-)
+) : Serializable
 
 data class Dob(
     @SerializedName("date") val date: String,
     @SerializedName("age") val age: Long
-)
+) : Serializable
 
 data class Registered(
     @SerializedName("date") val date: String,
     @SerializedName("age") val age: Long
-)
+) : Serializable
 
 data class Id(
     @SerializedName("name") val name: String,
     @SerializedName("value") val value: String
-)
+) : Serializable
 
 data class Picture(
     @SerializedName("large") val large: String,
     @SerializedName("medium") val medium: String,
     @SerializedName("thumbnail") val thumbnail: String
-)
+) : Serializable
 

@@ -70,6 +70,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onRandomUserButtonClicked() {
-        Intent(this, RandomUserActivity::class.java).apply{ startActivity(this) }
+        Intent(this, RandomUsersActivity::class.java).apply{ startActivity(this) }
     }
 }

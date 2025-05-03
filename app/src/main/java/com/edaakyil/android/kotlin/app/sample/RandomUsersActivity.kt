@@ -1,5 +1,6 @@
 package com.edaakyil.android.kotlin.app.sample
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -9,22 +10,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
-import com.edaakyil.android.kotlin.app.sample.api.constant.STATUS_OK
 import com.edaakyil.android.kotlin.app.sample.api.randomuser.me.dto.RandomUser
 import com.edaakyil.android.kotlin.app.sample.api.randomuser.me.dto.RandomUserInfo
 import com.edaakyil.android.kotlin.app.sample.api.randomuser.me.service.IRandomUserService
-import com.edaakyil.android.kotlin.app.sample.databinding.ActivityRandomUserBinding
+import com.edaakyil.android.kotlin.app.sample.databinding.ActivityRandomUsersBinding
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.HttpURLConnection
 import javax.inject.Inject
 
 private const val DEFAULT_USER_COUNT = 10
 
 @AndroidEntryPoint
-class RandomUserActivity : AppCompatActivity() {
-    private lateinit var mBinding: ActivityRandomUserBinding
+class RandomUsersActivity : AppCompatActivity() {
+    private lateinit var mBinding: ActivityRandomUsersBinding
 
     @Inject
     lateinit var randomUserService: IRandomUserService
@@ -38,7 +39,7 @@ class RandomUserActivity : AppCompatActivity() {
     private fun initialize() {
         enableEdgeToEdge()
         initBinding()
-        ViewCompat.setOnApplyWindowInsetsListener(mBinding.randomUserActivityMainLayout) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(mBinding.randomUsersActivityMainLayout) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -46,7 +47,7 @@ class RandomUserActivity : AppCompatActivity() {
     }
 
     private fun initBinding() {
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_random_user)
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_random_users)
         initModels()
     }
 
@@ -62,14 +63,14 @@ class RandomUserActivity : AppCompatActivity() {
             override fun onResponse(call: Call<RandomUserInfo?>, response: Response<RandomUserInfo?>) {
                 Log.i("Response-Raw", response.raw().toString())
 
-                if (response.code() != STATUS_OK) {
+                if (response.code() != HttpURLConnection.HTTP_OK) {
                     Log.e("Status", response.code().toString())
-                    Toast.makeText(this@RandomUserActivity, "Unsuccessful operation", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@RandomUsersActivity, "Unsuccessful operation", Toast.LENGTH_LONG).show()
                     return
                 }
 
                 if (response.body()?.users == null) {
-                    Toast.makeText(this@RandomUserActivity, "Limit exhausted", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@RandomUsersActivity, "Limit exhausted", Toast.LENGTH_LONG).show()
                     return
                 }
 
@@ -78,7 +79,7 @@ class RandomUserActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<RandomUserInfo?>, ex: Throwable) {
                 Log.e("onFailure", ex.message.toString())
-                Toast.makeText(this@RandomUserActivity, "Error occurred while connection", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@RandomUsersActivity, "Error occurred while connection", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -110,27 +111,6 @@ class RandomUserActivity : AppCompatActivity() {
     fun onUserSelected(position: Int) {
         val user = mBinding.adapter!!.getItem(position)
 
-        TODO()
+        Intent(this, RandomUserDetailsActivity::class.java).apply { putExtra("RANDOM_USER", user); startActivity(this) }
     }
 }
-
-
-
-/*
- <data>
-        <import type="com.edaakyil.android.kotlin.app.sample.api.randomuser.me.dto.RandomUserInfo"/>
-        <import type="com.edaakyil.android.kotlin.app.sample.RandomUserActivity"/>
-        <import type="android.widget.ArrayAdapter"/>
-
-        <variable name="adapter" type="ArrayAdapter&lt;RandomUserInfo&gt;"/>
-        <variable name="activity" type="RandomUserActivity"/>
-        <variable name="count" type="String"/>
-    </data>
-
-<ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adapter="@{adapter}"
-            android:onItemClick="@{ (p0, p1, pos, p4) -> activity.onUserSelected(pos) }"/>
-
- */

@@ -16,7 +16,10 @@
         android:theme="@style/Theme.SampleApp"
         tools:targetApi="31">
         <activity
-            android:name=".RandomUserActivity"
+            android:name=".RandomUserDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RandomUsersActivity"
             android:exported="false" />
         <activity
             android:name=".PostalCodeActivity"
