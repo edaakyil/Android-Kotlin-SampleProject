@@ -61,15 +61,19 @@ class MainActivity : AppCompatActivity() {
         //mBinding.dateTimeEdaLib = resources.getString(R.string.date_time_text, "").format(dateTimeFormatterEdaLib.format(dateTimeEdaLib))
     }
 
-    fun onPaymentButtonClicked() {
+    fun onCounterPageButtonClicked() {
+        Intent(this, CounterActivity::class.java).apply { startActivity(this) }
+    }
+
+    fun onPaymentPageButtonClicked() {
         Intent(this, PaymentActivity::class.java).apply { startActivity(this) }
     }
 
-    fun onPostalCodeButtonClicked() {
-        Intent(this, PostalCodeActivity::class.java).apply{ startActivity(this) }
+    fun onPostalCodesPageButtonClicked() {
+        Intent(this, PostalCodesActivity::class.java).apply{ startActivity(this) }
     }
 
-    fun onRandomUserButtonClicked() {
+    fun onRandomUsersPageButtonClicked() {
         Intent(this, RandomUsersActivity::class.java).apply{ startActivity(this) }
     }
 }

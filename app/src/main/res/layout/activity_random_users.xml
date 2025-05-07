@@ -24,6 +24,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:inputType="number"
             android:hint="@string/edit_text_count_hint"
             android:text="@={count}"/>
@@ -31,15 +32,16 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="@string/button_get_users"
-            android:onClick="@{ _ -> activity.onGetUsersButtonClicked() }"/>
+            android:onClick="@{_ -> activity.onGetUsersButtonClicked()}"/>
 
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adapter="@{adapter}"
-            android:onItemClick="@{ (p0, p1, pos, p4) -> activity.onUserSelected(pos) }"/>
+            android:onItemClick="@{(p0, p1, pos, p4) -> activity.onUserSelected(pos)}"/>
 
     </LinearLayout>
 </layout>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-    <import type="com.edaakyil.android.kotlin.app.sample.MainActivity"/>
+        <import type="com.edaakyil.android.kotlin.app.sample.MainActivity"/>
+
         <variable name="activity" type="MainActivity"/>
         <variable name="dateTime" type="String"/>
         <variable name="dateTimeEdaLib" type="String"/>
@@ -21,30 +22,42 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="@{dateTime}" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="@{dateTimeEdaLib}" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/counter_page_button_text"
+            android:onClick="@{_ -> activity.onCounterPageButtonClicked()}"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="@string/payment_page_button_text"
-            android:onClick="@{ _ -> activity.onPaymentButtonClicked() }"/>
+            android:onClick="@{_ -> activity.onPaymentPageButtonClicked()}"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/postal_code_page_button_text"
-            android:onClick="@{ _ -> activity.onPostalCodeButtonClicked() }"/>
+            android:layout_marginBottom="8dp"
+            android:text="@string/postal_codes_page_button_text"
+            android:onClick="@{_ -> activity.onPostalCodesPageButtonClicked()}"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/random_user_page_button_text"
-            android:onClick="@{ _ -> activity.onRandomUserButtonClicked() }"/>
+            android:layout_marginBottom="8dp"
+            android:text="@string/random_users_page_button_text"
+            android:onClick="@{_ -> activity.onRandomUsersPageButtonClicked()}"/>
 
     </LinearLayout>
 </layout>

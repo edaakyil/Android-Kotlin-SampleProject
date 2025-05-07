@@ -3,9 +3,10 @@
     <string name="date_time_text">Eda DateTime lib: %s</string>
 
     <!-- Button Text -->
+    <string name="counter_page_button_text">Counter Page</string>
     <string name="payment_page_button_text">Payment Page</string>
-    <string name="postal_code_page_button_text">Postal Code Page</string>
-    <string name="random_user_page_button_text">Random User Page</string>
+    <string name="postal_codes_page_button_text">Postal Codes Page</string>
+    <string name="random_users_page_button_text">Random Users Page</string>
     <string name="button_get_users">GET USERS</string>
 
     <!-- Hint -->
@@ -19,9 +20,14 @@
     <string name="problem_occurred_prompt">Problem occurred</string>
     <string name="invalid_count_value_prompt">Invalid count value</string>
     <string name="value_must_be_positive_prompt">Value must be positive</string>
-
-    <!--  -->
     <string name="message_invalid_value">Invalid Value</string>
     <string name="message_positive">Value must be positive</string>
+
+    <!-- Picture -->
     <string name="user_picture_content_description">Picture of a user</string>
+
+    <!-- Common -->
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+
 </resources>
