@@ -49,20 +49,31 @@ class CounterActivity : AppCompatActivity() {
 
     private fun initModels() {
         mBinding.activity = this
-        mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
         mBinding.startStopButtonText = getString(R.string.start)
+        mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
+        mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0)
     }
 
-    private fun setCounterText() {
+    private fun setCounterTextWithDataBinding(hour: Long, minute: Long, second: Long) {
+        mBinding.counterText = getString(R.string.counter_text).format(hour, minute, second)
+    }
+
+    private fun setCounterTextWithViewBinding(hour: Long, minute: Long, second: Long) {
+        //runOnUiThread { mBinding.counterActivityTextViewCounter.text = "%02d:%02d:%02d".format(hour, minute, second) }
+        //runOnUiThread { mBinding.counterActivityTextViewCounter.setText("%02d:%02d:%02d".format(hour, minute, second)) }
+        //runOnUiThread { mBinding.counterActivityTextViewCounter.text = getString(R.string.counter).format(hour, minute, second) }
+        //runOnUiThread { "%02d:%02d:%02d".format(hour, minute, second).apply { mBinding.counterActivityTextViewCounter.text = this } }
+        runOnUiThread { "%02d:%02d:%02d".format(hour, minute, second).also { mBinding.counterActivityTextViewCounter.text = it } }
+    }
+
+    private fun schedulerCallback() {
         val hour = mSeconds / 60 / 60
         val minute = mSeconds / 60 % 60
         val second = mSeconds % 60
 
-        mBinding.counterText = getString(R.string.counter_text).format(hour, minute, second)
-    }
+        setCounterTextWithDataBinding(hour, minute, second)
+        setCounterTextWithViewBinding(hour, minute, second)
 
-    private fun schedulerCallback() {
-        setCounterText()
         ++mSeconds
     }
 

@@ -33,6 +33,20 @@
             android:layout_marginBottom="16dp"
             android:text="@{counterText}"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textSize="16sp"
+            android:textStyle="bold|italic"
+            android:text="@string/counter_with_view_binding"/>
+
+        <TextView
+            android:id="@+id/counterActivityTextViewCounter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

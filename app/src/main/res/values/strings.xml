@@ -5,6 +5,7 @@
     <!-- TextView -->
     <string name="counter_text">%02d:%02d:%02d</string>
     <string name="counter_with_data_binding"><u>Counter With DataBinding:</u></string>
+    <string name="counter_with_view_binding"><u>Counter With ViewBinding:</u></string>
 
     <!-- Button Text -->
     <string name="counter_page_button_text">Counter Page</string>
