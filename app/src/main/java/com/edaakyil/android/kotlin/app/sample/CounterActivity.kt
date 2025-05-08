@@ -59,7 +59,11 @@ class CounterActivity : AppCompatActivity() {
         val second = mSeconds % 60
 
         mBinding.counterText = getString(R.string.counter_text).format(hour, minute, second)
-        //mBinding.counterText = "%02d:%02d:%02d".format(hour, minute, second)
+    }
+
+    private fun schedulerCallback() {
+        setCounterText()
+        ++mSeconds
     }
 
     fun onStartStopButtonClicked() {
@@ -68,7 +72,7 @@ class CounterActivity : AppCompatActivity() {
             mScheduledFuture?.cancel(false)
         } else {
             mBinding.startStopButtonText = getString(R.string.stop)
-            mScheduledFuture = scheduledThreadPool.scheduleWithFixedDelay({ setCounterText(); ++mSeconds }, 0, 1, TimeUnit.SECONDS)
+            mScheduledFuture = scheduledThreadPool.scheduleWithFixedDelay({ schedulerCallback() }, 0, 1, TimeUnit.SECONDS)
         }
 
         mStartedFlag = !mStartedFlag
