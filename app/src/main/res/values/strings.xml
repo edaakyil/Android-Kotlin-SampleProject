@@ -3,7 +3,7 @@
     <string name="date_time_text">Eda DateTime lib: %s</string>
 
     <!-- TextView -->
-    <string name="counter">%02d:%02d:%02d</string>
+    <string name="counter_text">%02d:%02d:%02d</string>
     <string name="counter_with_data_binding"><u>Counter With DataBinding:</u></string>
 
     <!-- Button Text -->
