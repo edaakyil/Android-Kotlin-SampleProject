@@ -7,6 +7,7 @@
 
         <variable name="activity" type="CounterActivity"/>
         <variable name="startStopButtonText" type="String"/>
+        <variable name="dateTimeText" type="String"/>
         <variable name="counterText" type="String"/>
     </data>
 
@@ -19,39 +20,60 @@
         android:layout_marginHorizontal="32dp"
         tools:context=".CounterActivity">
 
-        <TextView
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:textSize="16sp"
-            android:textStyle="bold|italic"
-            android:text="@string/counter_with_data_binding"/>
+            android:layout_marginBottom="16dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@{counterText}"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:text="@string/date_time_text"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:textSize="16sp"
-            android:textStyle="bold|italic"
-            android:text="@string/counter_with_view_binding"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dateTimeText}" />
 
-        <TextView
-            android:id="@+id/counterActivityTextViewCounter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"/>
+        </LinearLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{startStopButtonText}"
-            android:onClick="@{_ -> activity.onStartStopButtonClicked()}"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:text="@string/counter_with_data_binding"/>
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@{counterText}"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:text="@string/counter_with_view_binding"/>
+
+            <TextView
+                android:id="@+id/counterActivityTextViewCounter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{startStopButtonText}"
+                android:onClick="@{_ -> activity.onStartStopButtonClicked()}"/>
+
+        </LinearLayout>
 </layout>

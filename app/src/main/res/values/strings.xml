@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">SampleApp</string>
-    <string name="date_time_text">Eda DateTime lib: %s</string>
+    <string name="eda_date_time_text">Eda DateTime lib: %s</string>
 
     <!-- TextView -->
     <string name="counter_text">%02d:%02d:%02d</string>
+    <string name="date_time_text"><u>Date &amp; Time:</u></string>
     <string name="counter_with_data_binding"><u>Counter With DataBinding:</u></string>
     <string name="counter_with_view_binding"><u>Counter With ViewBinding:</u></string>
 

@@ -20,5 +20,5 @@ object ExecutorServiceModule {
     @Provides
     @Singleton
     @Named("counterActivityScheduledExecutorService")
-    fun provideScheduledExecutorService(): ScheduledExecutorService = Executors.newScheduledThreadPool(1)
+    fun provideScheduledExecutorService(): ScheduledExecutorService = Executors.newScheduledThreadPool(2)
 }

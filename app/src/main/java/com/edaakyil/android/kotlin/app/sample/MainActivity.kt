@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     private fun initModels() {
         mBinding.activity = this
         mBinding.dateTime = dateTimeFormatter.format(dateTime)
-        mBinding.dateTimeEdaLib = resources.getString(R.string.date_time_text, dateTimeFormatterEdaLib.format(dateTimeEdaLib))
+        mBinding.dateTimeEdaLib = resources.getString(R.string.eda_date_time_text, dateTimeFormatterEdaLib.format(dateTimeEdaLib))
         //mBinding.dateTimeEdaLib = resources.getString(R.string.date_time_text, "").format(dateTimeFormatterEdaLib.format(dateTimeEdaLib))
     }
 

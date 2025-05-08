@@ -1,14 +1,16 @@
 package com.edaakyil.android.kotlin.app.sample
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import com.edaakyil.android.kotlin.app.sample.databinding.ActivityCounterBinding
+import com.edaakyil.android.kotlin.lib.util.datetime.module.annotation.DateTimeFormatterENInterceptor
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -19,12 +21,21 @@ import javax.inject.Named
 class CounterActivity : AppCompatActivity() {
     private var mSeconds = 0L
     private var mStartedFlag = false
-    private var mScheduledFuture: ScheduledFuture<*>? = null
+    private var mCounterScheduledFuture: ScheduledFuture<*>? = null
+    private var mDateTimeScheduledFuture: ScheduledFuture<*>? = null
     private lateinit var mBinding: ActivityCounterBinding
 
     @Inject
+    @DateTimeFormatterENInterceptor
+    lateinit var dateTimeFormatterEN: DateTimeFormatter
+
+    @Inject
     @Named("counterActivityScheduledExecutorService")
-    lateinit var scheduledThreadPool: ScheduledExecutorService
+    lateinit var counterScheduledThreadPool: ScheduledExecutorService
+
+    @Inject
+    @Named("counterActivityScheduledExecutorService")
+    lateinit var dateTimeScheduledThreadPool: ScheduledExecutorService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +51,8 @@ class CounterActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        startDateTimeScheduler()
     }
 
     private fun initBinding() {
@@ -51,7 +64,18 @@ class CounterActivity : AppCompatActivity() {
         mBinding.activity = this
         mBinding.startStopButtonText = getString(R.string.start)
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
+        mBinding.dateTimeText = ""
         mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0)
+    }
+
+    private fun dateTimeSchedulerCallback() {
+        val now = LocalDateTime.now()
+
+        mBinding.dateTimeText = dateTimeFormatterEN.format(now)
+    }
+
+    private fun startDateTimeScheduler() {
+        mDateTimeScheduledFuture = dateTimeScheduledThreadPool.scheduleWithFixedDelay({ dateTimeSchedulerCallback() }, 0L, 1L, TimeUnit.SECONDS)
     }
 
     private fun setCounterTextWithDataBinding(hour: Long, minute: Long, second: Long) {
@@ -80,10 +104,10 @@ class CounterActivity : AppCompatActivity() {
     fun onStartStopButtonClicked() {
         if (mStartedFlag) {
             mBinding.startStopButtonText = getString(R.string.start)
-            mScheduledFuture?.cancel(false)
+            mCounterScheduledFuture?.cancel(false)
         } else {
             mBinding.startStopButtonText = getString(R.string.stop)
-            mScheduledFuture = scheduledThreadPool.scheduleWithFixedDelay({ schedulerCallback() }, 0, 1, TimeUnit.SECONDS)
+            mCounterScheduledFuture = counterScheduledThreadPool.scheduleWithFixedDelay({ schedulerCallback() }, 0, 1, TimeUnit.SECONDS)
         }
 
         mStartedFlag = !mStartedFlag
