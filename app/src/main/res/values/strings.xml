@@ -33,7 +33,7 @@
     <string name="user_picture_content_description">Picture of a user</string>
 
     <!-- Common -->
-    <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="start">Start</string>
 
 </resources>

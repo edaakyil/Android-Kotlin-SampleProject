@@ -22,7 +22,7 @@ class CounterActivity : AppCompatActivity() {
     private var mSeconds = 0L
     private var mStartedFlag = false
     private var mCounterScheduledFuture: ScheduledFuture<*>? = null
-    private var mDateTimeScheduledFuture: ScheduledFuture<*>? = null
+    private lateinit var mDateTimeScheduledFuture: ScheduledFuture<*>
     private lateinit var mBinding: ActivityCounterBinding
 
     @Inject
@@ -43,6 +43,15 @@ class CounterActivity : AppCompatActivity() {
         initialize()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (mCounterScheduledFuture != null)
+            mCounterScheduledFuture?.cancel(false)
+
+        mDateTimeScheduledFuture.cancel(false)
+    }
+
     private fun initialize() {
         enableEdgeToEdge()
         initBinding()
@@ -51,8 +60,6 @@ class CounterActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        startDateTimeScheduler()
     }
 
     private fun initBinding() {
@@ -62,10 +69,11 @@ class CounterActivity : AppCompatActivity() {
 
     private fun initModels() {
         mBinding.activity = this
+        mBinding.dateTimeText = ""
         mBinding.startStopButtonText = getString(R.string.start)
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
-        mBinding.dateTimeText = ""
         mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0)
+        startDateTimeScheduler()
     }
 
     private fun dateTimeSchedulerCallback() {
@@ -105,6 +113,7 @@ class CounterActivity : AppCompatActivity() {
         if (mStartedFlag) {
             mBinding.startStopButtonText = getString(R.string.start)
             mCounterScheduledFuture?.cancel(false)
+            mCounterScheduledFuture = null
         } else {
             mBinding.startStopButtonText = getString(R.string.stop)
             mCounterScheduledFuture = counterScheduledThreadPool.scheduleWithFixedDelay({ schedulerCallback() }, 0, 1, TimeUnit.SECONDS)
