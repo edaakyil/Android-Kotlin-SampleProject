@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
+import com.edaakyil.android.kotlin.app.sample.data.service.counter.CounterDataService
 import com.edaakyil.android.kotlin.app.sample.databinding.ActivityCounterBinding
 import com.edaakyil.android.kotlin.lib.util.datetime.module.annotation.DateTimeFormatterENInterceptor
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,6 +25,9 @@ class CounterActivity : AppCompatActivity() {
     private var mCounterScheduledFuture: ScheduledFuture<*>? = null
     private lateinit var mDateTimeScheduledFuture: ScheduledFuture<*>
     private lateinit var mBinding: ActivityCounterBinding
+
+    @Inject
+    lateinit var counterDataService: CounterDataService
 
     @Inject
     @DateTimeFormatterENInterceptor
@@ -122,9 +126,11 @@ class CounterActivity : AppCompatActivity() {
     }
 
     /**
-     * Each time the Reset button is clicked, the counter will be reset.
+     * Each time the Reset button is clicked, the current counter value will be saved (i.e. written) to the counter.txt file in the device's internal memory and the counter will be reset.
      */
     fun onResetButtonClicked() {
+        counterDataService.saveCurrentCounterValue(mSeconds - 1)
+
         mSeconds = 0L
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
         mBinding.counterActivityTextViewCounter.text = mBinding.counterText
