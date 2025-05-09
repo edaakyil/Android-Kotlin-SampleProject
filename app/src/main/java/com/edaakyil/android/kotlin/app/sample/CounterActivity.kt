@@ -75,7 +75,7 @@ class CounterActivity : AppCompatActivity() {
         mBinding.dateTimeText = ""
         mBinding.startStopButtonText = getString(R.string.start)
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
-        mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0)
+        mBinding.counterActivityTextViewCounter.text = mBinding.counterText
         startDateTimeScheduler()
     }
 
@@ -127,6 +127,6 @@ class CounterActivity : AppCompatActivity() {
     fun onResetButtonClicked() {
         mSeconds = 0L
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
-        mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0)
+        mBinding.counterActivityTextViewCounter.text = mBinding.counterText
     }
 }
