@@ -19,8 +19,11 @@
     <string name="edit_text_count_hint">Input user count:</string>
 
     <!-- AlertDialog -->
-    <string name="alert_dialog_alert_title">ALERT</string>
-    <string name="alert_dialog_ok">OK</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="alert_title">ALERT</string>
+    <string name="counter_remove_message">Are you sure you want to delete the all saved counters from the file?</string>
 
     <!-- Prompt && Messages -->
     <string name="problem_occurred_prompt">Problem occurred</string>
@@ -36,5 +39,6 @@
     <string name="stop">Stop</string>
     <string name="start">Start</string>
     <string name="reset">Reset</string>
+    <string name="remove_all">Remove All</string>
 
 </resources>

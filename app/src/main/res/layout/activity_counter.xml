@@ -79,9 +79,16 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/reset"
                 android:onClick="@{_ -> activity.onResetButtonClicked()}"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/remove_all"
+                android:onClick="@{_ -> activity.onRemoveAllButtonClicked()}"/>
 
         </LinearLayout>
 </layout>

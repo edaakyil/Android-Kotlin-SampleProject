@@ -26,9 +26,15 @@ class CounterDataService @Inject constructor(
             .writer(StandardCharsets.UTF_8))
             .use {
                 val nowStr = mDateTimeFormatter.format(LocalDateTime.now())
-                it.write("$seconds - $nowStr\r\n")
+                it.write("${"%02d".format(seconds)} - ($nowStr)\r\n")
             }
 
         return true
+    }
+
+    fun removeAllSavedCountersFromFile() {
+        // This truncates the file (i.e. deletes all of its contents).
+        // Dosyayı private mode'da açmak, dosyayı sıfırlamak demektir.
+        mContext.openFileOutput(FILE_NAME, Context.MODE_PRIVATE).use {  }
     }
 }

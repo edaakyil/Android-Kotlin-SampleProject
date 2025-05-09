@@ -2,6 +2,7 @@ package com.edaakyil.android.kotlin.app.sample
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -133,6 +134,19 @@ class CounterActivity : AppCompatActivity() {
 
         mSeconds = 0L
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
-        mBinding.counterActivityTextViewCounter.text = mBinding.counterText
+        mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0)
+    }
+
+    /**
+     * Each time the Reset All button is clicked, the counter values recorded in the internal memory of the device will be deleted from this file.
+     */
+    fun onRemoveAllButtonClicked() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.alert_title)
+            .setMessage(R.string.counter_remove_message)
+            .setPositiveButton(R.string.yes) { _, _ -> counterDataService.removeAllSavedCountersFromFile() }
+            .setNegativeButton(R.string.cancel) { _, _ -> }
+            .create()
+            .show()
     }
 }
