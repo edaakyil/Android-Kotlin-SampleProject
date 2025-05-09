@@ -43,6 +43,9 @@ class CounterActivity : AppCompatActivity() {
         initialize()
     }
 
+    /**
+     * When CounterActivity is destroyed, the counter and date-time timers will be stopped.
+     */
     override fun onDestroy() {
         super.onDestroy()
 
@@ -91,10 +94,6 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun setCounterTextWithViewBinding(hour: Long, minute: Long, second: Long) {
-        //runOnUiThread { mBinding.counterActivityTextViewCounter.text = "%02d:%02d:%02d".format(hour, minute, second) }
-        //runOnUiThread { mBinding.counterActivityTextViewCounter.setText("%02d:%02d:%02d".format(hour, minute, second)) }
-        //runOnUiThread { mBinding.counterActivityTextViewCounter.text = getString(R.string.counter).format(hour, minute, second) }
-        //runOnUiThread { "%02d:%02d:%02d".format(hour, minute, second).apply { mBinding.counterActivityTextViewCounter.text = this } }
         runOnUiThread { "%02d:%02d:%02d".format(hour, minute, second).also { mBinding.counterActivityTextViewCounter.text = it } }
     }
 
@@ -120,5 +119,14 @@ class CounterActivity : AppCompatActivity() {
         }
 
         mStartedFlag = !mStartedFlag
+    }
+
+    /**
+     * Each time the Reset button is clicked, the counter will be reset.
+     */
+    fun onResetButtonClicked() {
+        mSeconds = 0L
+        mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
+        mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0)
     }
 }

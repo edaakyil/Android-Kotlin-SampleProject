@@ -76,5 +76,12 @@
                 android:text="@{startStopButtonText}"
                 android:onClick="@{_ -> activity.onStartStopButtonClicked()}"/>
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/reset"
+                android:onClick="@{_ -> activity.onResetButtonClicked()}"/>
+
         </LinearLayout>
 </layout>
