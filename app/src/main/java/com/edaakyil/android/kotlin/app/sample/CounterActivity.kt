@@ -102,14 +102,14 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun schedulerCallback() {
+        ++mSeconds
+
         val hour = mSeconds / 60 / 60
         val minute = mSeconds / 60 % 60
         val second = mSeconds % 60
 
         setCounterTextWithDataBinding(hour, minute, second)
         setCounterTextWithViewBinding(hour, minute, second)
-
-        ++mSeconds
     }
 
     fun onStartStopButtonClicked() {
@@ -129,7 +129,7 @@ class CounterActivity : AppCompatActivity() {
      * Each time the Reset button is clicked, the current counter value will be saved (i.e. written) to the counter.txt file in the device's internal memory and the counter will be reset.
      */
     fun onResetButtonClicked() {
-        counterDataService.saveCurrentCounterValue(mSeconds - 1)
+        counterDataService.saveCurrentCounterValue(mSeconds)
 
         mSeconds = 0L
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
