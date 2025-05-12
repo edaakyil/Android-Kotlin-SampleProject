@@ -122,6 +122,27 @@ class CounterActivity : AppCompatActivity() {
         setCounterTextWithViewBinding(hour, minute, second)
     }
 
+    private fun showAlertDialogForResetButton() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.alert_title)
+            .setMessage(R.string.reset_counter_error_message)
+            .setPositiveButton(R.string.ok) { _, _ -> }
+            .show()
+    }
+
+    // UI şlemlerinin UI thread'de yani maini/primary thread'de yapılması gerekir ve
+    // Reset butonundaki akış başka bir thread'de olduğu için runOnUiThread'i kullandık
+    private fun resetButtonCallback() {
+        if (!counterDataService.saveCurrentSecond(mSeconds)) {
+            runOnUiThread { showAlertDialogForResetButton() }
+            return
+        }
+
+        mSeconds = 0L
+        mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
+        runOnUiThread { mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0) }
+    }
+
     fun onStartStopButtonClicked() {
         if (mStartedFlag) {
             mBinding.startStopButtonText = getString(R.string.start)
@@ -139,19 +160,9 @@ class CounterActivity : AppCompatActivity() {
      * Each time the Reset button is clicked, the current counter value will be saved (i.e. written) to the counter.txt file in the device's internal memory and the counter will be reset.
      */
     fun onResetButtonClicked() {
-        if (!counterDataService.saveCurrentSecond(mSeconds)) {
-            AlertDialog.Builder(this)
-                .setTitle(R.string.alert_title)
-                .setMessage(R.string.reset_counter_error_message)
-                .setPositiveButton(R.string.ok) { _, _ -> }
-                .show()
-
-            return
-        }
-
-        mSeconds = 0L
-        mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
-        mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0)
+        // Reset butonunda yapılan işlemleri CounterActivity tarafında asenkron hale getirildi.
+        // Herbir akış kendi içerisinde olduğundan thread sayısını arttırmamıza gerek yok
+        threadPool.execute { resetButtonCallback() }
     }
 
     /**
