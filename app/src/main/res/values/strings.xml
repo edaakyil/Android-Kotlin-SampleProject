@@ -23,13 +23,14 @@
     <string name="random_users_page_button_text">Random Users Page</string>
     <string name="button_get_users">GET USERS</string>
 
-    <!-- Hint -->
-    <string name="edit_text_count_hint">Input user count:</string>
-
     <!-- AlertDialog -->
-    <string name="alert_dialog_alert_title">ALERT</string>
+    <string name="alert_title">ALERT</string>
+    <string name="reset_counter_error_message">You cannot record any more seconds because of exceeding limit!</string>
     <string name="remove_all_counter_title">Remove All Alert</string>
     <string name="remove_all_counter_message">Are you sure to remove all the saved seconds?</string>
+
+    <!-- Hint -->
+    <string name="edit_text_count_hint">Input user count:</string>
 
     <!-- Prompt && Messages -->
     <string name="problem_occurred_prompt">Problem occurred</string>

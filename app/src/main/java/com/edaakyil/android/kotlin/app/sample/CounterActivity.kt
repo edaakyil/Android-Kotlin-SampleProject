@@ -20,6 +20,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
+private const val SECONDS_LIMIT = 20
+
 @AndroidEntryPoint
 class CounterActivity : AppCompatActivity() {
     private var mSeconds = 0L
@@ -73,6 +75,8 @@ class CounterActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        counterDataService.setLimit(SECONDS_LIMIT)
     }
 
     private fun initBinding() {
@@ -135,7 +139,15 @@ class CounterActivity : AppCompatActivity() {
      * Each time the Reset button is clicked, the current counter value will be saved (i.e. written) to the counter.txt file in the device's internal memory and the counter will be reset.
      */
     fun onResetButtonClicked() {
-        counterDataService.saveCurrentSecond(mSeconds)
+        if (!counterDataService.saveCurrentSecond(mSeconds)) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.alert_title)
+                .setMessage(R.string.reset_counter_error_message)
+                .setPositiveButton(R.string.ok) { _, _ -> }
+                .show()
+
+            return
+        }
 
         mSeconds = 0L
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
