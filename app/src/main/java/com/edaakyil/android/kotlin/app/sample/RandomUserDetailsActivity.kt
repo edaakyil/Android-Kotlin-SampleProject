@@ -17,12 +17,14 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.concurrent.ExecutorService
 import javax.inject.Inject
+import javax.inject.Named
 
 @AndroidEntryPoint
 class RandomUserDetailsActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityRandomUserDetailsBinding
 
     @Inject
+    @Named("singleThreadExecutorService")
     lateinit var threadPool: ExecutorService
 
     override fun onCreate(savedInstanceState: Bundle?) {

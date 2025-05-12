@@ -2,6 +2,7 @@ package com.edaakyil.android.kotlin.app.sample
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -12,6 +13,7 @@ import com.edaakyil.android.kotlin.lib.util.datetime.module.annotation.DateTimeF
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -34,11 +36,15 @@ class CounterActivity : AppCompatActivity() {
     lateinit var dateTimeFormatterEN: DateTimeFormatter
 
     @Inject
-    @Named("counterActivityScheduledExecutorService")
+    @Named("singleThreadExecutorService")
+    lateinit var threadPool: ExecutorService
+
+    @Inject
+    @Named("scheduledExecutorService")
     lateinit var counterScheduledThreadPool: ScheduledExecutorService
 
     @Inject
-    @Named("counterActivityScheduledExecutorService")
+    @Named("scheduledExecutorService")
     lateinit var dateTimeScheduledThreadPool: ScheduledExecutorService
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,10 +135,23 @@ class CounterActivity : AppCompatActivity() {
      * Each time the Reset button is clicked, the current counter value will be saved (i.e. written) to the counter.txt file in the device's internal memory and the counter will be reset.
      */
     fun onResetButtonClicked() {
-        counterDataService.saveCurrentCounterValue(mSeconds)
+        counterDataService.saveCurrentSecond(mSeconds)
 
         mSeconds = 0L
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
-        mBinding.counterActivityTextViewCounter.text = mBinding.counterText
+        mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0)
+    }
+
+    /**
+     * Each time the Reset All button is clicked, the counter values recorded in the internal memory of the device will be deleted from this file.
+     */
+    fun onRemoveAllButtonClicked() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.remove_all_counter_title)
+            .setMessage(R.string.remove_all_counter_message) // Are you sure you want to delete the all saved counters from the file?
+            .setPositiveButton(R.string.yes) { _, _ -> threadPool.execute { counterDataService.removeAllSavedSecondsFromFile() } }
+            .setNegativeButton(R.string.no) { _, _ -> }
+            //.create()
+            .show()
     }
 }

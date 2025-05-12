@@ -9,6 +9,14 @@
     <string name="counter_with_view_binding"><u>Counter With ViewBinding:</u></string>
 
     <!-- Button Text -->
+    <string name="ok">OK</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="stop">Stop</string>
+    <string name="start">Start</string>
+    <string name="reset">Reset</string>
+    <string name="cancel">Cancel</string>
+    <string name="remove_all">Remove All</string>
     <string name="counter_page_button_text">Counter Page</string>
     <string name="payment_page_button_text">Payment Page</string>
     <string name="postal_codes_page_button_text">Postal Codes Page</string>
@@ -20,7 +28,8 @@
 
     <!-- AlertDialog -->
     <string name="alert_dialog_alert_title">ALERT</string>
-    <string name="alert_dialog_ok">OK</string>
+    <string name="remove_all_counter_title">Remove All Alert</string>
+    <string name="remove_all_counter_message">Are you sure to remove all the saved seconds?</string>
 
     <!-- Prompt && Messages -->
     <string name="problem_occurred_prompt">Problem occurred</string>
@@ -33,8 +42,6 @@
     <string name="user_picture_content_description">Picture of a user</string>
 
     <!-- Common -->
-    <string name="stop">Stop</string>
-    <string name="start">Start</string>
-    <string name="reset">Reset</string>
+
 
 </resources>

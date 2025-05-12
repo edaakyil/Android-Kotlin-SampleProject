@@ -15,10 +15,11 @@ import javax.inject.Singleton
 object ExecutorServiceModule {
     @Provides
     @Singleton
+    @Named("singleThreadExecutorService")
     fun provideExecutorService(): ExecutorService = Executors.newSingleThreadExecutor()
 
     @Provides
     @Singleton
-    @Named("counterActivityScheduledExecutorService")
+    @Named("scheduledExecutorService")
     fun provideScheduledExecutorService(): ScheduledExecutorService = Executors.newScheduledThreadPool(2)
 }
