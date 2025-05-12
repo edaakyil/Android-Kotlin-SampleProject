@@ -52,11 +52,11 @@ class CounterDataService @Inject constructor(
         var result = true
 
         try {
-            if (mLimit != -1 && countOfSavedSeconds() >= mLimit)
-                result = false
-            else {
+            if (mLimit == -1 || countOfSavedSeconds() < mLimit) {
                 save()
                 result = true
+            } else {
+                result = false
             }
         } catch (_: FileNotFoundException) {
             save()
