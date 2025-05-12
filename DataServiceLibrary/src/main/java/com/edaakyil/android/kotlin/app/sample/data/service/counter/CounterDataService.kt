@@ -5,6 +5,7 @@ import com.edaakyil.android.kotlin.lib.util.datetime.module.annotation.DateTimeF
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.BufferedReader
 import java.io.BufferedWriter
+import java.io.File
 import java.io.FileNotFoundException
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
@@ -17,10 +18,11 @@ class CounterDataService @Inject constructor(
     @ApplicationContext context: Context,
     @DateTimeFormatterENInterceptor dateTimeFormatter: DateTimeFormatter
 ) {
-    private var mCount: Int = 1
-    private var mLimit: Int = -1
     private val mContext = context
     private val mDateTimeFormatter = dateTimeFormatter
+    private val mFile = File(mContext.filesDir, FILE_NAME)
+    private var mCount: Int = if (!mFile.exists()) 1 else countOfSavedSeconds() + 1
+    private var mLimit: Int = -1
 
     private fun countOfSavedSeconds(): Int {
         BufferedReader(mContext.openFileInput(FILE_NAME).reader(StandardCharsets.UTF_8)). use {
@@ -40,8 +42,7 @@ class CounterDataService @Inject constructor(
      */
     fun saveCurrentSecond(seconds: Long): Boolean {
         fun save() {
-            BufferedWriter(mContext.openFileOutput(FILE_NAME, Context.MODE_APPEND)
-                .writer(StandardCharsets.UTF_8))
+            BufferedWriter(mContext.openFileOutput(FILE_NAME, Context.MODE_APPEND).writer(StandardCharsets.UTF_8))
                 .use {
                     val nowStr = mDateTimeFormatter.format(LocalDateTime.now())
                     it.write("${"%02d".format(mCount++)}. ${"%02d".format(seconds)} ($nowStr)\r\n")
