@@ -2,6 +2,7 @@ package com.edaakyil.android.kotlin.app.sample
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -73,6 +74,7 @@ class CounterActivity : AppCompatActivity() {
         mBinding.startStopButtonText = getString(R.string.start)
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
         mBinding.counterActivityTextViewCounter.text = mBinding.counterText
+        mBinding.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, mutableListOf<String>())
         startDateTimeScheduler()
     }
 
@@ -124,6 +126,12 @@ class CounterActivity : AppCompatActivity() {
         mSeconds = 0L
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
         runOnUiThread { mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0) }
+    }
+
+    private fun loadAllSecondsThreadCallback() {
+        val seconds = counterDataService.findAllSavedSeconds()
+
+        runOnUiThread { mBinding.adapter?.addAll(seconds) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -181,5 +189,11 @@ class CounterActivity : AppCompatActivity() {
             .setNegativeButton(R.string.no) { _, _ -> }
             //.create()
             .show()
+    }
+
+    fun onLoadAllButtonClicked() {
+        mBinding.adapter?.clear()
+
+        threadPool.execute { loadAllSecondsThreadCallback() }
     }
 }

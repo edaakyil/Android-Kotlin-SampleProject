@@ -4,8 +4,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="com.edaakyil.android.kotlin.app.sample.CounterActivity"/>
+        <import type="android.widget.ArrayAdapter"/>
 
         <variable name="activity" type="CounterActivity"/>
+        <variable name="adapter" type="ArrayAdapter&lt;String&gt;"/>
         <variable name="startStopButtonText" type="String"/>
         <variable name="dateTimeText" type="String"/>
         <variable name="counterText" type="String"/>
@@ -126,6 +128,18 @@
             android:layout_marginBottom="8dp"
             android:layout_marginHorizontal="64dp"
             android:background="?android:attr/listDivider" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/load_all"
+            android:onClick="@{_ -> activity.onLoadAllButtonClicked()}"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adapter="@{adapter}"/>
 
     </LinearLayout>
 </layout>

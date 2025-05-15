@@ -78,4 +78,11 @@ class CounterDataService @Inject constructor(
         // Dosyayı private mode'da açmak, dosyayı sıfırlamak demektir.
         mContext.openFileOutput(FILE_NAME, Context.MODE_PRIVATE).use {  }
     }
+
+    fun findAllSavedSeconds(): List<String> {
+        BufferedReader(mContext.openFileInput(FILE_NAME).reader(StandardCharsets.UTF_8)).use {
+            //return it.readLines()
+            return generateSequence { it.readLine() }.takeWhile { it != null }.toList()
+        }
+    }
 }
