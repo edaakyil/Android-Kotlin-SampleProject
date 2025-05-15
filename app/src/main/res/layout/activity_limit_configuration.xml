@@ -35,9 +35,16 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/save"
                 android:onClick="@{_ -> activity.onSaveButtonClicked()}"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/no_limit"
+                android:onClick="@{_ -> activity.onNoLimitButtonClicked()}"/>
 
             <Button
                 android:layout_width="wrap_content"

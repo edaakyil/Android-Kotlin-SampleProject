@@ -17,11 +17,12 @@
     <string name="close">Close</string>
     <string name="reset">Reset</string>
     <string name="cancel">Cancel</string>
-    <string name="configure">Configure</string>
     <string name="load">Load</string>
     <string name="save">Save</string>
     <string name="load_all">Load All</string>
     <string name="remove_all">Remove All</string>
+    <string name="configure">Configure</string>
+    <string name="no_limit">No Limit</string>
     <string name="counter_page_button_text">Counter Page</string>
     <string name="payment_page_button_text">Payment Page</string>
     <string name="postal_codes_page_button_text">Postal Codes Page</string>

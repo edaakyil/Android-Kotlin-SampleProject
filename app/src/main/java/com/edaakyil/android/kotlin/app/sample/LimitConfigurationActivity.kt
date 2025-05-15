@@ -44,9 +44,9 @@ class LimitConfigurationActivity : AppCompatActivity() {
         mBinding.activity = this
     }
 
-    private fun saveButtonCallback() {
+    private fun saveButtonCallback(limit: Int) {
         try {
-            counterDataService.setLimit(mBinding.limitValue!!.toInt())
+            counterDataService.setLimit(limit)
             finish()
         } catch (_: NumberFormatException) {
             runOnUiThread { Toast.makeText(this, R.string.invalid_value_message, Toast.LENGTH_SHORT).show() }
@@ -59,7 +59,9 @@ class LimitConfigurationActivity : AppCompatActivity() {
         initialize()
     }
 
-    fun onSaveButtonClicked() = threadPool.execute { saveButtonCallback() }
+    fun onSaveButtonClicked() = threadPool.execute { saveButtonCallback(mBinding.limitValue!!.toInt()) }
+
+    fun onNoLimitButtonClicked() = threadPool.execute { saveButtonCallback(-1) }
 
     fun onCloseButtonClicked() =  finish()
 }
