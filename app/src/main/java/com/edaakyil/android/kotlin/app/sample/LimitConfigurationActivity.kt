@@ -44,13 +44,7 @@ class LimitConfigurationActivity : AppCompatActivity() {
         mBinding.activity = this
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        initialize()
-    }
-
-    fun onSaveButtonClicked() {
+    private fun saveButtonCallback() {
         try {
             counterDataService.setLimit(mBinding.limitValue!!.toInt())
             finish()
@@ -58,6 +52,14 @@ class LimitConfigurationActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.invalid_value_message, Toast.LENGTH_SHORT).show()
         }
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        initialize()
+    }
+
+    fun onSaveButtonClicked() = threadPool.execute { saveButtonCallback() }
 
     fun onCloseButtonClicked() =  finish()
 }

@@ -21,6 +21,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
+private const val SECONDS_LIMIT = 20
+
 @AndroidEntryPoint
 class CounterActivity : AppCompatActivity() {
     private var mSeconds = 0L
@@ -56,6 +58,8 @@ class CounterActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        counterDataService.setLimit(SECONDS_LIMIT)
     }
 
     private fun initBinding() {

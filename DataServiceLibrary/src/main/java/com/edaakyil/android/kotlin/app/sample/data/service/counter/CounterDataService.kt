@@ -38,6 +38,7 @@ class CounterDataService @Inject constructor(
         // Here default limit (-1) means limitless
         if (limit <= 0 && limit != -1)
             throw IllegalArgumentException("Invalid limit value.")
+
         mLimit = limit
     }
 
