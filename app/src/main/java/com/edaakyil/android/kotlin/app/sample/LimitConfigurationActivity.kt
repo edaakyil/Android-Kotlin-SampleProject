@@ -49,7 +49,7 @@ class LimitConfigurationActivity : AppCompatActivity() {
             counterDataService.setLimit(mBinding.limitValue!!.toInt())
             finish()
         } catch (_: NumberFormatException) {
-            Toast.makeText(this, R.string.invalid_value_message, Toast.LENGTH_SHORT).show()
+            runOnUiThread { Toast.makeText(this, R.string.invalid_value_message, Toast.LENGTH_SHORT).show() }
         }
     }
 
