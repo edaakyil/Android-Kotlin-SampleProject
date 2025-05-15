@@ -58,4 +58,6 @@ class LimitConfigurationActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.invalid_value_message, Toast.LENGTH_SHORT).show()
         }
     }
+
+    fun onCloseButtonClicked() =  finish()
 }
