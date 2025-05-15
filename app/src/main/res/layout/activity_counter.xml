@@ -24,7 +24,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,33 +41,47 @@
 
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:textSize="18sp"
-            android:textStyle="bold|italic"
-            android:text="@string/counter_with_data_binding"/>
+            android:layout_marginBottom="8dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@{counterText}"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:text="@string/counter_with_data_binding"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:textSize="18sp"
-            android:textStyle="bold|italic"
-            android:text="@string/counter_with_view_binding"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{counterText}"/>
 
-        <TextView
-            android:id="@+id/counterActivityTextViewCounter"
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:text="@string/counter_with_view_binding"/>
+
+            <TextView
+                android:id="@+id/counterActivityTextViewCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
 
         <Button
             android:layout_width="match_parent"
@@ -79,16 +93,39 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="4dp"
             android:text="@string/reset"
             android:onClick="@{_ -> activity.onResetButtonClicked()}"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginHorizontal="64dp"
+            android:background="?android:attr/listDivider" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/configure"
+            android:onClick="@{_ -> activity.onConfigureButtonClicked()}"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:text="@string/remove_all"
             android:onClick="@{_ -> activity.onRemoveAllButtonClicked()}"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginHorizontal="64dp"
+            android:background="?android:attr/listDivider" />
 
     </LinearLayout>
 </layout>

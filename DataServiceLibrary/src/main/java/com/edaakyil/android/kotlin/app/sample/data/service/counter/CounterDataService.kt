@@ -11,9 +11,11 @@ import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val FILE_NAME = "counter.txt"
 
+@Singleton
 class CounterDataService @Inject constructor(
     @ApplicationContext context: Context,
     @DateTimeFormatterENInterceptor dateTimeFormatter: DateTimeFormatter
@@ -21,8 +23,10 @@ class CounterDataService @Inject constructor(
     private val mContext = context
     private val mDateTimeFormatter = dateTimeFormatter
     private val mFile = File(mContext.filesDir, FILE_NAME)
-    private var mCount: Int = if (!mFile.exists()) 1 else countOfSavedSeconds() + 1
+    private var mCount: Int = setCount()
     private var mLimit: Int = -1
+
+    private fun setCount() = if (!mFile.exists()) 1 else countOfSavedSeconds() + 1
 
     private fun countOfSavedSeconds(): Int {
         BufferedReader(mContext.openFileInput(FILE_NAME).reader(StandardCharsets.UTF_8)). use {
@@ -53,6 +57,7 @@ class CounterDataService @Inject constructor(
 
         try {
             if (mLimit == -1 || countOfSavedSeconds() < mLimit) {
+                mCount = setCount()
                 save()
                 result = true
             } else {

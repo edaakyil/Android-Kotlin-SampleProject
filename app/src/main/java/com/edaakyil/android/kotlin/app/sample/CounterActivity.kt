@@ -1,5 +1,6 @@
 package com.edaakyil.android.kotlin.app.sample
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -19,8 +20,6 @@ import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
-
-private const val SECONDS_LIMIT = 20
 
 @AndroidEntryPoint
 class CounterActivity : AppCompatActivity() {
@@ -49,24 +48,6 @@ class CounterActivity : AppCompatActivity() {
     @Named("scheduledExecutorService")
     lateinit var dateTimeScheduledThreadPool: ScheduledExecutorService
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        initialize()
-    }
-
-    /**
-     * When CounterActivity is destroyed, the counter and date-time timers will be stopped.
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-
-        if (mCounterScheduledFuture != null)
-            mCounterScheduledFuture?.cancel(false)
-
-        mDateTimeScheduledFuture.cancel(false)
-    }
-
     private fun initialize() {
         enableEdgeToEdge()
         initBinding()
@@ -75,8 +56,6 @@ class CounterActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        counterDataService.setLimit(SECONDS_LIMIT)
     }
 
     private fun initBinding() {
@@ -143,6 +122,24 @@ class CounterActivity : AppCompatActivity() {
         runOnUiThread { mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0) }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        initialize()
+    }
+
+    /**
+     * When CounterActivity is destroyed, the counter and date-time timers will be stopped.
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (mCounterScheduledFuture != null)
+            mCounterScheduledFuture?.cancel(false)
+
+        mDateTimeScheduledFuture.cancel(false)
+    }
+
     fun onStartStopButtonClicked() {
         if (mStartedFlag) {
             mBinding.startStopButtonText = getString(R.string.start)
@@ -163,6 +160,10 @@ class CounterActivity : AppCompatActivity() {
         // Reset butonunda yapılan işlemleri CounterActivity tarafında asenkron hale getirildi.
         // Herbir akış kendi içerisinde olduğundan thread sayısını arttırmamıza gerek yok
         threadPool.execute { resetButtonCallback() }
+    }
+
+    fun onConfigureButtonClicked() {
+        Intent(this, LimitConfigurationActivity::class.java).apply { startActivity(this) }
     }
 
     /**

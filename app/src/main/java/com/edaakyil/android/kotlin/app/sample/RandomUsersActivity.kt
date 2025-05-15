@@ -104,7 +104,7 @@ class RandomUsersActivity : AppCompatActivity() {
 
         } catch (ex: NumberFormatException) {
             Log.e("NumberFormatException", ex.message!!)
-            Toast.makeText(this, R.string.message_positive, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.positive_message, Toast.LENGTH_LONG).show()
         }
     }
 
