@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
+    implementation(libs.karandev.data)
     implementation(libs.edaakyil.datetime)
 }
 

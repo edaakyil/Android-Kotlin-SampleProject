@@ -44,6 +44,7 @@
     <string name="value_must_be_positive_prompt">Value must be positive</string>
     <string name="invalid_value_message">Invalid Value</string>
     <string name="positive_message">Value must be positive</string>
+    <string name="io_problem_message">IO problem occurred</string>
 
     <!-- Picture -->
     <string name="user_picture_content_description">Picture of a user</string>

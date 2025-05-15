@@ -66,6 +66,7 @@ dependencies {
     // Gson
     implementation(libs.gson)
 
+    implementation(libs.karandev.data)
     implementation(libs.edaakyil.datetime)
     implementation(project(":PaymentLibrary"))
     implementation(project(":DataServiceLibrary"))

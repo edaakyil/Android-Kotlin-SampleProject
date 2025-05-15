@@ -3,6 +3,7 @@ package com.edaakyil.android.kotlin.app.sample
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import com.edaakyil.android.kotlin.app.sample.data.service.counter.CounterDataService
 import com.edaakyil.android.kotlin.app.sample.databinding.ActivityCounterBinding
 import com.edaakyil.android.kotlin.lib.util.datetime.module.annotation.DateTimeFormatterENInterceptor
+import com.karandev.data.exception.service.DataServiceException
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -129,9 +131,13 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun loadAllSecondsThreadCallback() {
-        val seconds = counterDataService.findAllSavedSeconds()
+        try {
+            val seconds = counterDataService.findAllSavedSeconds()
 
-        runOnUiThread { mBinding.adapter?.clear(); mBinding.adapter?.addAll(seconds) }
+            runOnUiThread { mBinding.adapter?.clear(); mBinding.adapter?.addAll(seconds) }
+        } catch (ex: DataServiceException) {
+            runOnUiThread { Toast.makeText(this, R.string.io_problem_message, Toast.LENGTH_SHORT).show() }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

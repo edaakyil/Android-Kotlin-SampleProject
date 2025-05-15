@@ -2,11 +2,13 @@ package com.edaakyil.android.kotlin.app.sample.data.service.counter
 
 import android.content.Context
 import com.edaakyil.android.kotlin.lib.util.datetime.module.annotation.DateTimeFormatterENInterceptor
+import com.karandev.data.exception.service.DataServiceException
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -29,8 +31,13 @@ class CounterDataService @Inject constructor(
     private fun setCount() = if (!mFile.exists()) 1 else countOfSavedSeconds() + 1
 
     private fun countOfSavedSeconds(): Int {
-        BufferedReader(mContext.openFileInput(FILE_NAME).reader(StandardCharsets.UTF_8)). use {
-            return it.readLines().size
+        try {
+            BufferedReader(mContext.openFileInput(FILE_NAME).reader(StandardCharsets.UTF_8)). use {
+                //return it.readLines().size
+                return generateSequence { it.readLine() }.takeWhile { it != null }.count()
+            }
+        } catch (ex: IOException) {
+            throw DataServiceException("CounterDataService.countData", ex)
         }
     }
 
@@ -47,11 +54,15 @@ class CounterDataService @Inject constructor(
      */
     fun saveCurrentSecond(seconds: Long): Boolean {
         fun save() {
-            BufferedWriter(mContext.openFileOutput(FILE_NAME, Context.MODE_APPEND).writer(StandardCharsets.UTF_8))
-                .use {
-                    val nowStr = mDateTimeFormatter.format(LocalDateTime.now())
-                    it.write("${"%02d".format(mCount++)}. ${"%02d".format(seconds)} ($nowStr)\r\n") // it.write("$seconds@$nowStr\n")
-                }
+            try {
+                BufferedWriter(mContext.openFileOutput(FILE_NAME, Context.MODE_APPEND).writer(StandardCharsets.UTF_8))
+                    .use {
+                        val nowStr = mDateTimeFormatter.format(LocalDateTime.now())
+                        it.write("${"%02d".format(mCount++)}. ${"%02d".format(seconds)} ($nowStr)\r\n") // it.write("$seconds@$nowStr\n")
+                    }
+            } catch (ex: IOException) {
+                throw DataServiceException("CounterDataService.save", ex)
+            }
         }
 
         var result = true
@@ -66,6 +77,8 @@ class CounterDataService @Inject constructor(
             }
         } catch (_: FileNotFoundException) {
             save()
+        } catch (ex: IOException) {
+            throw DataServiceException("CounterDataService.saveSeconds", ex)
         }
 
         return result
@@ -74,15 +87,23 @@ class CounterDataService @Inject constructor(
     fun removeAllSavedSecondsFromFile() {
         mCount = 1
 
-        // This truncates the file (i.e. deletes all of its contents).
-        // Dosyayı private mode'da açmak, dosyayı sıfırlamak demektir.
-        mContext.openFileOutput(FILE_NAME, Context.MODE_PRIVATE).use {  }
+        try {
+            // This truncates the file (i.e. deletes all of its contents).
+            // Dosyayı private mode'da açmak, dosyayı sıfırlamak demektir.
+            mContext.openFileOutput(FILE_NAME, Context.MODE_PRIVATE).use {  }
+        } catch (ex: IOException) {
+            throw DataServiceException("CounterDataService.removeAll", ex)
+        }
     }
 
     fun findAllSavedSeconds(): List<String> {
-        BufferedReader(mContext.openFileInput(FILE_NAME).reader(StandardCharsets.UTF_8)).use {
-            //return it.readLines()
-            return generateSequence { it.readLine() }.takeWhile { it != null }.toList()
+        try {
+            BufferedReader(mContext.openFileInput(FILE_NAME).reader(StandardCharsets.UTF_8)).use {
+                //return it.readLines()
+                return generateSequence { it.readLine() }.takeWhile { it != null }.toList()
+            }
+        } catch (ex: IOException) {
+            throw DataServiceException("CounterDataService.findAll", ex)
         }
     }
 }

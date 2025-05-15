@@ -13,6 +13,7 @@ desugar_jdk_libs = "2.1.5"
 hilt = "2.51.1"
 gson = "2.10.1"
 converterGson = "2.9.0"
+karandevData = "8.0.0"
 edaakyil_datetime = "3.1.0"
 csdKotlinUtil = "8.0.0"
 
@@ -31,8 +32,9 @@ hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", ve
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "converterGson" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
-edaakyil-datetime = { module = "com.edaakyil:com-edaakyil-android-lib-datetime", version.ref = "edaakyil_datetime" }
+karandev-data = { module = "com.karandev:com-karandev-data", version.ref = "karandevData" }
 csd-kotlin-util = { module = "org.csystem:org-csystem-kotlin-util", version.ref = "csdKotlinUtil" }
+edaakyil-datetime = { module = "com.edaakyil:com-edaakyil-android-lib-datetime", version.ref = "edaakyil_datetime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
