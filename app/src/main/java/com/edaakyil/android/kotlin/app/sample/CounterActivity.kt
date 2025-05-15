@@ -191,7 +191,7 @@ class CounterActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(R.string.remove_all_counter_title)
             .setMessage(R.string.remove_all_counter_message) // Are you sure you want to delete the all saved counters from the file?
-            .setPositiveButton(R.string.yes) { _, _ -> threadPool.execute { counterDataService.removeAllSavedSecondsFromFile() } }
+            .setPositiveButton(R.string.yes) { _, _ -> threadPool.execute { counterDataService.removeAllSavedSecondsFromFile() }; mBinding.adapter?.clear() }
             .setNegativeButton(R.string.no) { _, _ -> }
             //.create()
             .show()
