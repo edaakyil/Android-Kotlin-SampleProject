@@ -50,7 +50,7 @@ class CounterDataService @Inject constructor(
             BufferedWriter(mContext.openFileOutput(FILE_NAME, Context.MODE_APPEND).writer(StandardCharsets.UTF_8))
                 .use {
                     val nowStr = mDateTimeFormatter.format(LocalDateTime.now())
-                    it.write("${"%02d".format(mCount++)}. ${"%02d".format(seconds)} ($nowStr)\r\n")
+                    it.write("${"%02d".format(mCount++)}. ${"%02d".format(seconds)} ($nowStr)\r\n") // it.write("$seconds@$nowStr\n")
                 }
         }
 

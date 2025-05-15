@@ -131,7 +131,7 @@ class CounterActivity : AppCompatActivity() {
     private fun loadAllSecondsThreadCallback() {
         val seconds = counterDataService.findAllSavedSeconds()
 
-        runOnUiThread { mBinding.adapter?.addAll(seconds) }
+        runOnUiThread { mBinding.adapter?.clear(); mBinding.adapter?.addAll(seconds) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -192,8 +192,6 @@ class CounterActivity : AppCompatActivity() {
     }
 
     fun onLoadAllButtonClicked() {
-        mBinding.adapter?.clear()
-
         threadPool.execute { loadAllSecondsThreadCallback() }
     }
 }
