@@ -203,6 +203,10 @@ class CounterActivity : AppCompatActivity() {
 
     fun onLoadButtonClicked() {
         val position = mBinding.counterActivityListViewSeconds.checkedItemPosition
+
+        if (position == -1)
+            return
+
         Toast.makeText(this, mBinding.adapter?.getItem(position).toString(), Toast.LENGTH_SHORT).show()
     }
 }
