@@ -125,16 +125,25 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:text="@string/load_all"
             android:onClick="@{_ -> activity.onLoadAllButtonClicked()}"/>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/load"
+            android:onClick="@{_ -> activity.onLoadButtonClicked()}"/>
+
         <ListView
+            android:id="@+id/counterActivityListViewSeconds"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="#FFCC00"
             android:dividerHeight="2dp"
-        android:adapter="@{adapter}"/>
+            android:adapter="@{adapter}"
+            android:choiceMode="singleChoice"/>
 
     </LinearLayout>
 </layout>

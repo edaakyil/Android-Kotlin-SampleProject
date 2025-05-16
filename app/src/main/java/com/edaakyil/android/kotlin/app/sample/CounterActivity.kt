@@ -76,7 +76,7 @@ class CounterActivity : AppCompatActivity() {
         mBinding.startStopButtonText = getString(R.string.start)
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
         mBinding.counterActivityTextViewCounter.text = mBinding.counterText
-        mBinding.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, mutableListOf<String>())
+        mBinding.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, mutableListOf<String>())
         startDateTimeScheduler()
     }
 
@@ -199,5 +199,9 @@ class CounterActivity : AppCompatActivity() {
 
     fun onLoadAllButtonClicked() {
         threadPool.execute { loadAllSecondsThreadCallback() }
+    }
+
+    fun onLoadButtonClicked() {
+        Toast.makeText(this, mBinding.counterActivityListViewSeconds.checkedItemPosition.toString(), Toast.LENGTH_SHORT).show()
     }
 }
