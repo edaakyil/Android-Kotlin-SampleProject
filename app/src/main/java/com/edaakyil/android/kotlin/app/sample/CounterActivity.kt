@@ -202,6 +202,7 @@ class CounterActivity : AppCompatActivity() {
     }
 
     fun onLoadButtonClicked() {
-        Toast.makeText(this, mBinding.counterActivityListViewSeconds.checkedItemPosition.toString(), Toast.LENGTH_SHORT).show()
+        val position = mBinding.counterActivityListViewSeconds.checkedItemPosition
+        Toast.makeText(this, mBinding.adapter?.getItem(position).toString(), Toast.LENGTH_SHORT).show()
     }
 }
