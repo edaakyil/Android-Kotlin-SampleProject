@@ -32,7 +32,7 @@ class CounterDataService @Inject constructor(
 
     fun setLimit(limit: Int = -1) {
         // Here default limit (-1) means limitless
-        require(!(limit <= 0 && limit != -1)) { "Invalid limit value" }
+        require(limit > 0 || limit == -1) { "Invalid limit value" }
 
         mLimit = limit
     }

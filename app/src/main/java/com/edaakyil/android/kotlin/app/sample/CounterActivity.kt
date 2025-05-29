@@ -25,6 +25,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
+private const val SECONDS_LIMIT = 20
+
 @AndroidEntryPoint
 class CounterActivity : AppCompatActivity() {
     private var mSeconds = 0L
@@ -60,6 +62,8 @@ class CounterActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        counterDataService.setLimit(SECONDS_LIMIT)
     }
 
     private fun initBinding() {
@@ -88,8 +92,6 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun setCounterTexts() {
-        ++mSeconds
-
         val hour = mSeconds / 60 / 60
         val minute = mSeconds / 60 % 60
         val second = mSeconds % 60
@@ -106,12 +108,15 @@ class CounterActivity : AppCompatActivity() {
         runOnUiThread { "%02d:%02d:%02d".format(hour, minute, second).also { mBinding.counterActivityTextViewCounter.text = it } }
     }
 
-    private fun schedulerCallback() = setCounterTexts()
+    private fun schedulerCallback() {
+        ++mSeconds
+        setCounterTexts()
+    }
 
     private fun showAlertDialogForResetButton() {
         AlertDialog.Builder(this)
             .setTitle(R.string.alert_title)
-            .setMessage(R.string.reset_counter_error_message)
+            .setMessage(R.string.exceeding_counter_limit_message_for_reset_button)
             .setPositiveButton(R.string.ok) { _, _ -> }
             .show()
     }
@@ -139,19 +144,49 @@ class CounterActivity : AppCompatActivity() {
         }
     }
 
+    /*
+    Limit var
+            mSecond = second
+            saveSecond()
+            setText()
+
+    Limit yok
+        Yes
+            mSecond = second
+            setText()
+        No
+
+     */
+
+    /**
+     * If limit is inadequate, AlertDialog will be shown for loading without saving
+     */
+    private fun showAlertDialogForLimit(second: Long) {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.alert_title)
+            .setMessage(R.string.exceeding_counter_limit_message_for_load_button)
+            .setPositiveButton(R.string.yes) { _, _ -> mSeconds = second; setCounterTexts() }
+            .setNegativeButton(R.string.no) { _, _ -> }
+            .setNeutralButton(R.string.cancel) { _, _ -> }
+            .show()
+    }
+
     private fun getSecondByRecord(str: String): Long {
         // data'yı pars etme
         val info = str.split('@')
 
-        return info[1].toLong() - 1
+        return info[1].toLong()
     }
 
     private fun loadSecondThreadCallback(position: Int) {
         try {
-            counterDataService.saveCurrentSecond(mSeconds)
 
             val second = getSecondByRecord(mBinding.adapter!!.getItem(position)!!)
-            mSeconds = second
+
+            if (!counterDataService.saveCurrentSecond(mSeconds)) {
+                runOnUiThread { showAlertDialogForLimit(second) }
+                return
+            }
 
             setCounterTexts()
         } catch (ex: DataServiceException) {
@@ -168,8 +203,8 @@ class CounterActivity : AppCompatActivity() {
     /**
      * When CounterActivity is destroyed, the counter and date-time timers will be stopped.
      */
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
 
         if (mCounterScheduledFuture != null)
             mCounterScheduledFuture?.cancel(false)
@@ -222,7 +257,7 @@ class CounterActivity : AppCompatActivity() {
     }
 
     /**
-     * Load selected second from list of seconds be loaded when Load All button clicked
+     * Loads selected second from list of seconds be loaded when Load All button clicked and Saves the current second on the screen
      */
     fun onLoadButtonClicked() {
         val position = mBinding.counterActivityListViewSeconds.checkedItemPosition
@@ -231,3 +266,5 @@ class CounterActivity : AppCompatActivity() {
             threadPool.execute { loadSecondThreadCallback(position) }
     }
 }
+
+

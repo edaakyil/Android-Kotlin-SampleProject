@@ -31,7 +31,8 @@
 
     <!-- AlertDialog -->
     <string name="alert_title">ALERT</string>
-    <string name="reset_counter_error_message">You cannot record any more seconds because of exceeding limit!</string>
+    <string name="exceeding_counter_limit_message_for_reset_button">You cannot record any more seconds because of exceeding limit!</string>
+    <string name="exceeding_counter_limit_message_for_load_button">You cannot record any more seconds because of exceeding limit! Do you still want to upload the second without saving it?</string>
     <string name="remove_all_counter_title">Remove All Alert</string>
     <string name="remove_all_counter_message">Are you sure to remove all the saved seconds?</string>
 
