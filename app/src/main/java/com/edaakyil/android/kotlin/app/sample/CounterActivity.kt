@@ -148,6 +148,8 @@ class CounterActivity : AppCompatActivity() {
 
     private fun loadSecondThreadCallback(position: Int) {
         try {
+            counterDataService.saveCurrentSecond(mSeconds)
+
             val second = getSecondByRecord(mBinding.adapter!!.getItem(position)!!)
             mSeconds = second
 
