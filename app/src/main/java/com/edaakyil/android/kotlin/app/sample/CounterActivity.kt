@@ -25,8 +25,6 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
-private const val SECONDS_LIMIT = 20
-
 @AndroidEntryPoint
 class CounterActivity : AppCompatActivity() {
     private var mSeconds = 0L
@@ -62,8 +60,6 @@ class CounterActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        counterDataService.setLimit(SECONDS_LIMIT)
     }
 
     private fun initBinding() {
@@ -91,15 +87,7 @@ class CounterActivity : AppCompatActivity() {
         mDateTimeScheduledFuture = dateTimeScheduledThreadPool.scheduleWithFixedDelay({ dateTimeSchedulerCallback() }, 0L, 1L, TimeUnit.SECONDS)
     }
 
-    private fun setCounterTextWithDataBinding(hour: Long, minute: Long, second: Long) {
-        mBinding.counterText = getString(R.string.counter_text).format(hour, minute, second)
-    }
-
-    private fun setCounterTextWithViewBinding(hour: Long, minute: Long, second: Long) {
-        runOnUiThread { "%02d:%02d:%02d".format(hour, minute, second).also { mBinding.counterActivityTextViewCounter.text = it } }
-    }
-
-    private fun schedulerCallback() {
+    private fun setCounterTexts() {
         ++mSeconds
 
         val hour = mSeconds / 60 / 60
@@ -109,6 +97,16 @@ class CounterActivity : AppCompatActivity() {
         setCounterTextWithDataBinding(hour, minute, second)
         setCounterTextWithViewBinding(hour, minute, second)
     }
+
+    private fun setCounterTextWithDataBinding(hour: Long, minute: Long, second: Long) {
+        mBinding.counterText = getString(R.string.counter_text).format(hour, minute, second)
+    }
+
+    private fun setCounterTextWithViewBinding(hour: Long, minute: Long, second: Long) {
+        runOnUiThread { "%02d:%02d:%02d".format(hour, minute, second).also { mBinding.counterActivityTextViewCounter.text = it } }
+    }
+
+    private fun schedulerCallback() = setCounterTexts()
 
     private fun showAlertDialogForResetButton() {
         AlertDialog.Builder(this)
@@ -141,9 +139,19 @@ class CounterActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadSecondThreadCallback() {
+    private fun getSecondByRecord(str: String): Long {
+        // data'yı pars etme
+        val info = str.split('@')
+
+        return info[1].toLong() - 1
+    }
+
+    private fun loadSecondThreadCallback(position: Int) {
         try {
-            TODO()
+            val second = getSecondByRecord(mBinding.adapter!!.getItem(position)!!)
+            mSeconds = second
+
+            setCounterTexts()
         } catch (ex: DataServiceException) {
             runOnUiThread { Toast.makeText(this, R.string.io_problem_message, Toast.LENGTH_SHORT).show() }
         }
@@ -218,6 +226,6 @@ class CounterActivity : AppCompatActivity() {
         val position = mBinding.counterActivityListViewSeconds.checkedItemPosition
 
         if (position != -1)
-            threadPool.execute { loadSecondThreadCallback() }
+            threadPool.execute { loadSecondThreadCallback(position) }
     }
 }
