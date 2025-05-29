@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold|italic"
                 android:text="@string/date_time_text"/>
 
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold|italic"
                 android:text="@string/counter_with_data_binding"/>
 
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold|italic"
                 android:text="@string/counter_with_view_binding"/>
 
@@ -99,6 +99,12 @@
             android:layout_marginBottom="4dp"
             android:text="@string/reset"
             android:onClick="@{_ -> activity.onResetButtonClicked()}"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            
+        </LinearLayout>
 
         <Button
             android:layout_width="match_parent"
@@ -130,9 +136,11 @@
             android:onClick="@{_ -> activity.onLoadAllButtonClicked()}"/>
 
         <Button
+            android:id="@+id/counterActivityLoadButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:visibility="gone"
             android:text="@string/load"
             android:onClick="@{_ -> activity.onLoadButtonClicked()}"/>
 

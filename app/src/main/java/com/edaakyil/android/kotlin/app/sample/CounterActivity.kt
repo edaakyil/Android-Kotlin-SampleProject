@@ -2,6 +2,7 @@ package com.edaakyil.android.kotlin.app.sample
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -140,6 +141,14 @@ class CounterActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadSecondThreadCallback() {
+        try {
+            TODO()
+        } catch (ex: DataServiceException) {
+            runOnUiThread { Toast.makeText(this, R.string.io_problem_message, Toast.LENGTH_SHORT).show() }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -199,14 +208,16 @@ class CounterActivity : AppCompatActivity() {
 
     fun onLoadAllButtonClicked() {
         threadPool.execute { loadAllSecondsThreadCallback() }
+        mBinding.counterActivityLoadButton.visibility = View.VISIBLE
     }
 
+    /**
+     * Load selected second from list of seconds be loaded when Load All button clicked
+     */
     fun onLoadButtonClicked() {
         val position = mBinding.counterActivityListViewSeconds.checkedItemPosition
 
-        if (position == -1)
-            return
-
-        Toast.makeText(this, mBinding.adapter?.getItem(position).toString(), Toast.LENGTH_SHORT).show()
+        if (position != -1)
+            threadPool.execute { loadSecondThreadCallback() }
     }
 }

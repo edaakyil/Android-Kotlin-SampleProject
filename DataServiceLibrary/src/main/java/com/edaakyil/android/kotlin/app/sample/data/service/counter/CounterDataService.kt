@@ -30,17 +30,6 @@ class CounterDataService @Inject constructor(
 
     private fun setCount() = if (!mFile.exists()) 1 else countOfSavedSeconds() + 1
 
-    private fun countOfSavedSeconds(): Int {
-        try {
-            BufferedReader(mContext.openFileInput(FILE_NAME).reader(StandardCharsets.UTF_8)). use {
-                //return it.readLines().size
-                return generateSequence { it.readLine() }.takeWhile { it != null }.count()
-            }
-        } catch (ex: IOException) {
-            throw DataServiceException("CounterDataService.countData", ex)
-        }
-    }
-
     fun setLimit(limit: Int = -1) {
         // Here default limit (-1) means limitless
         if (limit <= 0 && limit != -1)
@@ -49,19 +38,33 @@ class CounterDataService @Inject constructor(
         mLimit = limit
     }
 
+    private fun countOfSavedSeconds(): Int {
+        try {
+            BufferedReader(mContext.openFileInput(FILE_NAME).reader(StandardCharsets.UTF_8)). use {
+                //return it.readLines().size
+
+                // line sayısı çok fazla olursa line-line okumak yorabileceği için readLine işlemini generateSequence ile yaptık yani döngü ile okuduk
+                // Bu şekilde arkaplanda stream bunu daha basit hale getiricek
+                return generateSequence { it.readLine() }.takeWhile { it != null }.count()
+            }
+        } catch (ex: IOException) {
+            throw DataServiceException("CounterDataService.countData", ex)
+        }
+    }
+
     /**
      * It saves (i.e. writes) the current counter value to the counter.txt file in the device's internal memory, along with the date-time information on which it was recorded, and returns true if the operation is successful.
      */
-    fun saveCurrentSecond(seconds: Long): Boolean {
+    fun saveCurrentSecond(second: Long): Boolean {
         fun save() {
             try {
                 BufferedWriter(mContext.openFileOutput(FILE_NAME, Context.MODE_APPEND).writer(StandardCharsets.UTF_8))
                     .use {
                         val nowStr = mDateTimeFormatter.format(LocalDateTime.now())
-                        it.write("${"%02d".format(mCount++)}. ${"%02d".format(seconds)} ($nowStr)\r\n") // it.write("$seconds@$nowStr\n")
+                        it.write("${"%02d".format(mCount++)}. ${"%02d".format(second)} ($nowStr)\r\n") // it.write("$seconds@$nowStr\n")
                     }
             } catch (ex: IOException) {
-                throw DataServiceException("CounterDataService.save", ex)
+                throw DataServiceException("CounterDataService.saveCurrentSecond.save", ex)
             }
         }
 
