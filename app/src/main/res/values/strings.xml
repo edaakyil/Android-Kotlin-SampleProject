@@ -3,6 +3,8 @@
     <string name="eda_date_time_text">Eda DateTime lib: %s</string>
 
     <!-- TextView -->
+    <string name="counter_limit_text">Limit: %d</string>
+    <string name="counter_saved_count_text">Count of saved seconds: %d</string>
     <string name="counter_text">%02d:%02d:%02d</string>
     <string name="date_time_text"><u>Date &amp; Time:</u></string>
     <string name="counter_with_data_binding"><u>Counter With DataBinding:</u></string>
@@ -31,8 +33,10 @@
 
     <!-- AlertDialog -->
     <string name="alert_title">ALERT</string>
-    <string name="exceeding_counter_limit_message_for_reset_button">You cannot record any more seconds because of exceeding limit!</string>
-    <string name="exceeding_counter_limit_message_for_load_button">You cannot record any more seconds because of exceeding limit! Do you still want to upload the second without saving it?</string>
+    <string name="counter_activity_reset_button_exceeding_limit_message">You cannot record any more seconds because of exceeding limit!</string>
+    <string name="counter_activity_load_button_exceeding_limit_message">You cannot record any more seconds because of exceeding limit!</string>
+    <string name="counter_activity_load_button_exceeding_limit_positive_button">Save and Load</string>
+    <string name="counter_activity_load_button_exceeding_limit_negative_button">Load without Save</string>
     <string name="remove_all_counter_title">Remove All Alert</string>
     <string name="remove_all_counter_message">Are you sure to remove all the saved seconds?</string>
 

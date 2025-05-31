@@ -46,7 +46,7 @@ class LimitConfigurationActivity : AppCompatActivity() {
 
     private fun saveButtonCallback(limit: Int) {
         try {
-            counterDataService.setLimit(limit)
+            counterDataService.limit = limit
             finish()
         } catch (_: NumberFormatException) {
             runOnUiThread { Toast.makeText(this, R.string.invalid_value_message, Toast.LENGTH_SHORT).show() }

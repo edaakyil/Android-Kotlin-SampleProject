@@ -25,8 +25,6 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
-private const val SECONDS_LIMIT = 20
-
 @AndroidEntryPoint
 class CounterActivity : AppCompatActivity() {
     private var mSeconds = 0L
@@ -62,8 +60,6 @@ class CounterActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        counterDataService.setLimit(SECONDS_LIMIT)
     }
 
     private fun initBinding() {
@@ -75,6 +71,8 @@ class CounterActivity : AppCompatActivity() {
         mBinding.activity = this
         mBinding.dateTimeText = ""
         mBinding.startStopButtonText = getString(R.string.start)
+        mBinding.limit = getString(R.string.counter_limit_text).format(counterDataService.limit)
+        mBinding.count = getString(R.string.counter_saved_count_text).format(counterDataService.count)
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
         mBinding.counterActivityTextViewCounter.text = mBinding.counterText
         mBinding.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, mutableListOf<String>())
@@ -91,13 +89,18 @@ class CounterActivity : AppCompatActivity() {
         mDateTimeScheduledFuture = dateTimeScheduledThreadPool.scheduleWithFixedDelay({ dateTimeSchedulerCallback() }, 0L, 1L, TimeUnit.SECONDS)
     }
 
-    private fun setCounterTexts() {
+    private fun setCounterTexts(flag: Boolean = true) {
         val hour = mSeconds / 60 / 60
         val minute = mSeconds / 60 % 60
         val second = mSeconds % 60
 
-        setCounterTextWithDataBinding(hour, minute, second)
-        setCounterTextWithViewBinding(hour, minute, second)
+        mBinding.counterText = getString(R.string.counter_text).format(hour, minute, second)
+
+        if (flag)
+            runOnUiThread { "%02d:%02d:%02d".format(hour, minute, second).also { mBinding.counterActivityTextViewCounter.text = it } }
+        else
+            "%02d:%02d:%02d".format(hour, minute, second).also { mBinding.counterActivityTextViewCounter.text = it }
+
     }
 
     private fun setCounterTextWithDataBinding(hour: Long, minute: Long, second: Long) {
@@ -116,7 +119,7 @@ class CounterActivity : AppCompatActivity() {
     private fun showAlertDialogForResetButton() {
         AlertDialog.Builder(this)
             .setTitle(R.string.alert_title)
-            .setMessage(R.string.exceeding_counter_limit_message_for_reset_button)
+            .setMessage(R.string.counter_activity_reset_button_exceeding_limit_message)
             .setPositiveButton(R.string.ok) { _, _ -> }
             .show()
     }
@@ -124,14 +127,22 @@ class CounterActivity : AppCompatActivity() {
     // UI şlemlerinin UI thread'de yani maini/primary thread'de yapılması gerekir ve
     // Reset butonundaki akış başka bir thread'de olduğu için runOnUiThread'i kullandık
     private fun resetButtonCallback() {
-        if (!counterDataService.saveCurrentSecond(mSeconds)) {
+        if (!counterDataService.saveCurrentSecondByLimit(mSeconds)) {
             runOnUiThread { showAlertDialogForResetButton() }
             return
         }
 
         mSeconds = 0L
+
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
         runOnUiThread { mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0) }
+        mBinding.count = getString(R.string.counter_saved_count_text).format(counterDataService.count)
+    }
+
+    private fun removeAllSecondsCallback() {
+        threadPool.execute { counterDataService.removeAllSavedSecondsFromFile() }
+        mBinding.adapter?.clear()
+        mBinding.count = getString(R.string.counter_saved_count_text).format(counterDataService.count)
     }
 
     private fun loadAllSecondsThreadCallback() {
@@ -158,15 +169,26 @@ class CounterActivity : AppCompatActivity() {
 
      */
 
+    private fun loadSecond(second: Long, flag: Boolean) {
+        mSeconds = second
+        setCounterTexts(flag)
+    }
+
+    private fun saveAndLoadSecond(second: Long) {
+        counterDataService.saveCurrentSecond(mSeconds)
+        loadSecond(second, false)
+        mBinding.count = getString(R.string.counter_saved_count_text).format(counterDataService.count)
+    }
+
     /**
      * If limit is inadequate, AlertDialog will be shown for loading without saving
      */
     private fun showAlertDialogForLimit(second: Long) {
         AlertDialog.Builder(this)
             .setTitle(R.string.alert_title)
-            .setMessage(R.string.exceeding_counter_limit_message_for_load_button)
-            .setPositiveButton(R.string.yes) { _, _ -> mSeconds = second; setCounterTexts() }
-            .setNegativeButton(R.string.no) { _, _ -> }
+            .setMessage(R.string.counter_activity_load_button_exceeding_limit_message)
+            .setPositiveButton(R.string.counter_activity_load_button_exceeding_limit_positive_button) { _, _ ->  saveAndLoadSecond(second) }
+            .setNegativeButton(R.string.counter_activity_load_button_exceeding_limit_negative_button) { _, _ -> loadSecond(second, false) }
             .setNeutralButton(R.string.cancel) { _, _ -> }
             .show()
     }
@@ -180,15 +202,14 @@ class CounterActivity : AppCompatActivity() {
 
     private fun loadSecondThreadCallback(position: Int) {
         try {
-
             val second = getSecondByRecord(mBinding.adapter!!.getItem(position)!!)
 
-            if (!counterDataService.saveCurrentSecond(mSeconds)) {
+            if (!counterDataService.saveCurrentSecondByLimit(mSeconds)) {
                 runOnUiThread { showAlertDialogForLimit(second) }
                 return
             }
 
-            setCounterTexts()
+            loadSecond(second, true)
         } catch (ex: DataServiceException) {
             runOnUiThread { Toast.makeText(this, R.string.io_problem_message, Toast.LENGTH_SHORT).show() }
         }
@@ -200,11 +221,17 @@ class CounterActivity : AppCompatActivity() {
         initialize()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        mBinding.limit = getString(R.string.counter_limit_text).format(counterDataService.limit)
+    }
+
     /**
      * When CounterActivity is destroyed, the counter and date-time timers will be stopped.
      */
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroy() {
+        super.onDestroy()
 
         if (mCounterScheduledFuture != null)
             mCounterScheduledFuture?.cancel(false)
@@ -245,7 +272,7 @@ class CounterActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(R.string.remove_all_counter_title)
             .setMessage(R.string.remove_all_counter_message) // Are you sure you want to delete the all saved counters from the file?
-            .setPositiveButton(R.string.yes) { _, _ -> threadPool.execute { counterDataService.removeAllSavedSecondsFromFile() }; mBinding.adapter?.clear() }
+            .setPositiveButton(R.string.yes) { _, _ -> removeAllSecondsCallback() }
             .setNegativeButton(R.string.no) { _, _ -> }
             //.create()
             .show()

@@ -11,6 +11,8 @@
         <variable name="startStopButtonText" type="String"/>
         <variable name="dateTimeText" type="String"/>
         <variable name="counterText" type="String"/>
+        <variable name="count" type="String"/>
+        <variable name="limit" type="String"/>
     </data>
 
     <LinearLayout
@@ -86,54 +88,102 @@
 
         </LinearLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="@{startStopButtonText}"
-            android:onClick="@{_ -> activity.onStartStopButtonClicked()}"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="@string/reset"
-            android:onClick="@{_ -> activity.onResetButtonClicked()}"/>
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            
-        </LinearLayout>
-
-        <Button
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="@string/configure"
-            android:onClick="@{_ -> activity.onConfigureButtonClicked()}"/>
+            android:layout_marginBottom="4dp">
+
+            <Button
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+
+                android:text="@string/configure"
+                android:onClick="@{_ -> activity.onConfigureButtonClicked()}"/>
+
+            <Button
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:text="@{startStopButtonText}"
+                android:onClick="@{_ -> activity.onStartStopButtonClicked()}"/>
+
+            <Button
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/reset"
+                android:onClick="@{_ -> activity.onResetButtonClicked()}"/>
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginHorizontal="64dp"
+            android:layout_marginHorizontal="32dp"
             android:background="?android:attr/listDivider" />
 
-        <Button
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="@string/remove_all"
-            android:onClick="@{_ -> activity.onRemoveAllButtonClicked()}"/>
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginBottom="4dp">
 
-        <Button
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:text="@{limit}"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@{count}"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginHorizontal="32dp"
+            android:background="?android:attr/listDivider" />
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="@string/load_all"
-            android:onClick="@{_ -> activity.onLoadAllButtonClicked()}"/>
+
+            android:layout_marginBottom="4dp">
+
+            <Button
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:text="@string/load_all"
+                android:onClick="@{_ -> activity.onLoadAllButtonClicked()}"/>
+
+            <Button
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/remove_all"
+                android:onClick="@{_ -> activity.onRemoveAllButtonClicked()}"/>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/counterActivityLoadButton"
