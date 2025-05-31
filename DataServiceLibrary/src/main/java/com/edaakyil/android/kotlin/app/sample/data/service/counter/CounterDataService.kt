@@ -26,8 +26,6 @@ class CounterDataService @Inject constructor(
     private val mContext = context
     private val mDateTimeFormatter = dateTimeFormatter
     private val mFile = File(mContext.filesDir, FILE_NAME)
-    //private var mCount: Int = setCount()
-    //private var mLimit: Int = -1
     var count: Int = if (!mFile.exists()) 0 else countOfSavedSeconds()
     var limit: Int = SECONDS_LIMIT
         set(value) {
@@ -50,15 +48,6 @@ class CounterDataService @Inject constructor(
             throw DataServiceException("CounterDataService.countData", ex)
         }
     }
-
-    //fun setCount() = if (!mFile.exists()) 1 else countOfSavedSeconds() + 1
-
-    /*fun setLimit(limit: Int = -1) {
-        // Here default limit (-1) means limitless
-        require(limit > 0 || limit == -1) { "Invalid limit value" }
-
-        mLimit = limit
-    }*/
 
     fun saveCurrentSecond(second: Long) {
         try {

@@ -103,14 +103,6 @@ class CounterActivity : AppCompatActivity() {
 
     }
 
-    private fun setCounterTextWithDataBinding(hour: Long, minute: Long, second: Long) {
-        mBinding.counterText = getString(R.string.counter_text).format(hour, minute, second)
-    }
-
-    private fun setCounterTextWithViewBinding(hour: Long, minute: Long, second: Long) {
-        runOnUiThread { "%02d:%02d:%02d".format(hour, minute, second).also { mBinding.counterActivityTextViewCounter.text = it } }
-    }
-
     private fun schedulerCallback() {
         ++mSeconds
         setCounterTexts()
