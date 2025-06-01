@@ -195,12 +195,11 @@ class CounterActivity : AppCompatActivity() {
         try {
             val second = getSecondByRecord(mBinding.adapter!!.getItem(position)!!)
 
-            if (!counterDataService.saveCurrentSecondByLimit(mSeconds)) {
+            if (!counterDataService.saveCurrentSecondByLimit(mSeconds))
                 runOnUiThread { showAlertDialogForLimit(second) }
-                return
-            }
+            else
+                loadSecond(second, true)
 
-            loadSecond(second, true)
         } catch (ex: DataServiceException) {
             runOnUiThread { Toast.makeText(this, R.string.io_problem_message, Toast.LENGTH_SHORT).show() }
         }
