@@ -132,9 +132,8 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun removeAllSecondsCallback() {
-        threadPool.execute { counterDataService.removeAllSavedSecondsFromFile() }
+        threadPool.execute { counterDataService.removeAllSavedSecondsFromFile(); mBinding.count = counterDataService.count.toString() }
         mBinding.adapter?.clear()
-        mBinding.count = counterDataService.count.toString()
     }
 
     private fun loadAllSecondsThreadCallback() {
@@ -216,19 +215,24 @@ class CounterActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        startDateTimeScheduler()
+
+        if (mStartedFlag)
+            mCounterScheduledFuture = counterScheduledThreadPool.scheduleWithFixedDelay({ schedulerCallback() }, 0, 1, TimeUnit.SECONDS)
+
         mBinding.limit = if (counterDataService.limit == -1) "Limitless" else counterDataService.limit.toString()
     }
 
     /**
      * When CounterActivity is destroyed, the counter and date-time timers will be stopped.
      */
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
+
+        mDateTimeScheduledFuture.cancel(false)
 
         if (mCounterScheduledFuture != null)
             mCounterScheduledFuture?.cancel(false)
-
-        mDateTimeScheduledFuture.cancel(false)
     }
 
     fun onStartStopButtonClicked() {

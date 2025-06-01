@@ -35,6 +35,13 @@ class CounterDataService @Inject constructor(
             field = value
         }
 
+    init {
+        val file = File(context.filesDir, FILE_NAME)
+
+        if (!file.exists())
+            file.createNewFile()
+    }
+
     private fun countOfSavedSeconds(): Int {
         if (!File(mContext.filesDir, FILE_NAME).exists())
             throw FileNotFoundException("$FILE_NAME file not found")
