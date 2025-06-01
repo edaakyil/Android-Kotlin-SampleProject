@@ -166,9 +166,9 @@ class CounterActivity : AppCompatActivity() {
         mBinding.count = counterDataService.count.toString()
     }
 
-    private fun saveAndLoadSecond(second: Long) {
+    private fun saveAndLoadSecond(second: Long, flag: Boolean) {
         counterDataService.saveCurrentSecond(mSeconds)
-        loadSecond(second, false)
+        loadSecond(second, flag)
     }
 
     /**
@@ -178,7 +178,7 @@ class CounterActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(R.string.alert_title)
             .setMessage(R.string.counter_activity_load_button_exceeding_limit_message)
-            .setPositiveButton(R.string.counter_activity_load_button_exceeding_limit_positive_button) { _, _ ->  saveAndLoadSecond(second) }
+            .setPositiveButton(R.string.counter_activity_load_button_exceeding_limit_positive_button) { _, _ ->  saveAndLoadSecond(second, false) }
             .setNegativeButton(R.string.counter_activity_load_button_exceeding_limit_negative_button) { _, _ -> loadSecond(second, false) }
             .setNeutralButton(R.string.cancel) { _, _ -> }
             .show()
@@ -195,10 +195,10 @@ class CounterActivity : AppCompatActivity() {
         try {
             val second = getSecondByRecord(mBinding.adapter!!.getItem(position)!!)
 
-            if (!counterDataService.saveCurrentSecondByLimit(mSeconds))
+            if (counterDataService.limit <= counterDataService.count && counterDataService.limit != -1)
                 runOnUiThread { showAlertDialogForLimit(second) }
             else
-                loadSecond(second, true)
+                saveAndLoadSecond(second, true)
 
         } catch (ex: DataServiceException) {
             runOnUiThread { Toast.makeText(this, R.string.io_problem_message, Toast.LENGTH_SHORT).show() }
