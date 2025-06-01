@@ -71,8 +71,8 @@ class CounterActivity : AppCompatActivity() {
         mBinding.activity = this
         mBinding.dateTimeText = ""
         mBinding.startStopButtonText = getString(R.string.start)
-        mBinding.limit = getString(R.string.counter_limit_text).format(counterDataService.limit)
-        mBinding.count = getString(R.string.counter_saved_count_text).format(counterDataService.count)
+        mBinding.limit = counterDataService.limit.toString()
+        mBinding.count = counterDataService.count.toString()
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
         mBinding.counterActivityTextViewCounter.text = mBinding.counterText
         mBinding.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, mutableListOf<String>())
@@ -128,13 +128,13 @@ class CounterActivity : AppCompatActivity() {
 
         mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
         runOnUiThread { mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0) }
-        mBinding.count = getString(R.string.counter_saved_count_text).format(counterDataService.count)
+        mBinding.count = counterDataService.count.toString()
     }
 
     private fun removeAllSecondsCallback() {
         threadPool.execute { counterDataService.removeAllSavedSecondsFromFile() }
         mBinding.adapter?.clear()
-        mBinding.count = getString(R.string.counter_saved_count_text).format(counterDataService.count)
+        mBinding.count = counterDataService.count.toString()
     }
 
     private fun loadAllSecondsThreadCallback() {
@@ -164,12 +164,12 @@ class CounterActivity : AppCompatActivity() {
     private fun loadSecond(second: Long, flag: Boolean) {
         mSeconds = second
         setCounterTexts(flag)
+        mBinding.count = counterDataService.count.toString()
     }
 
     private fun saveAndLoadSecond(second: Long) {
         counterDataService.saveCurrentSecond(mSeconds)
         loadSecond(second, false)
-        mBinding.count = getString(R.string.counter_saved_count_text).format(counterDataService.count)
     }
 
     /**
@@ -216,7 +216,7 @@ class CounterActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        mBinding.limit = getString(R.string.counter_limit_text).format(counterDataService.limit)
+        mBinding.limit = counterDataService.limit.toString()
     }
 
     /**

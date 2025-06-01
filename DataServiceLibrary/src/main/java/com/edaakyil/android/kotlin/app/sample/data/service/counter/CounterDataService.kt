@@ -26,7 +26,7 @@ class CounterDataService @Inject constructor(
     private val mContext = context
     private val mDateTimeFormatter = dateTimeFormatter
     private val mFile = File(mContext.filesDir, FILE_NAME)
-    var count: Int = if (!mFile.exists()) 0 else countOfSavedSeconds()
+    var count: Int = countOfSavedSeconds()
     var limit: Int = SECONDS_LIMIT
         set(value) {
             // Here default limit (-1) means limitless
@@ -36,6 +36,9 @@ class CounterDataService @Inject constructor(
         }
 
     private fun countOfSavedSeconds(): Int {
+        if (!File(mContext.filesDir, FILE_NAME).exists())
+            throw FileNotFoundException("$FILE_NAME file not found")
+
         try {
             BufferedReader(mContext.openFileInput(FILE_NAME).reader(StandardCharsets.UTF_8)). use {
                 //return it.readLines().size
