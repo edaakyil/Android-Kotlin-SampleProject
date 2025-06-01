@@ -124,11 +124,14 @@ class CounterActivity : AppCompatActivity() {
             return
         }
 
-        mSeconds = 0L
+        runOnUiThread {
+            mBinding.adapter?.addAll(counterDataService.findAllSavedSeconds()[counterDataService.count - 1])
+            mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0)
+        }
 
-        mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
-        runOnUiThread { mBinding.counterActivityTextViewCounter.text = getString(R.string.counter_text).format(0, 0, 0) }
         mBinding.count = counterDataService.count.toString()
+        mBinding.counterText = getString(R.string.counter_text).format(0, 0, 0)
+        mSeconds = 0L
     }
 
     private fun removeAllSecondsCallback() {
@@ -169,6 +172,7 @@ class CounterActivity : AppCompatActivity() {
     private fun saveAndLoadSecond(second: Long, flag: Boolean) {
         counterDataService.saveCurrentSecond(mSeconds)
         loadSecond(second, flag)
+        runOnUiThread { mBinding.adapter?.addAll(counterDataService.findAllSavedSeconds()[counterDataService.count - 1]) }
     }
 
     /**
