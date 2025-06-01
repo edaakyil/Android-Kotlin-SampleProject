@@ -216,7 +216,7 @@ class CounterActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        mBinding.limit = counterDataService.limit.toString()
+        mBinding.limit = if (counterDataService.limit == -1) "Limitless" else counterDataService.limit.toString()
     }
 
     /**

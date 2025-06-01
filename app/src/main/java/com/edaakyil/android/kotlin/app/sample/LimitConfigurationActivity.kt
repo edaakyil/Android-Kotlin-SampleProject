@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import com.edaakyil.android.kotlin.app.sample.data.service.counter.CounterDataService
 import com.edaakyil.android.kotlin.app.sample.databinding.ActivityLimitConfigurationBinding
@@ -28,11 +26,6 @@ class LimitConfigurationActivity : AppCompatActivity() {
     private fun initialize() {
         enableEdgeToEdge()
         initBinding()
-        ViewCompat.setOnApplyWindowInsetsListener(mBinding.limitConfigurationActivityMainLayout) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
     }
 
     private fun initBinding() {
@@ -42,6 +35,8 @@ class LimitConfigurationActivity : AppCompatActivity() {
 
     private fun initModels() {
         mBinding.activity = this
+        mBinding.limitValue = if (counterDataService.limit == -1) "Limitless" else counterDataService.limit.toString()
+        mBinding.flag = counterDataService.limit != -1
     }
 
     private fun saveButtonCallback(limit: Int) {
@@ -59,9 +54,22 @@ class LimitConfigurationActivity : AppCompatActivity() {
         initialize()
     }
 
+    fun onEditTextClicked() {
+        mBinding.limitValue = ""
+    }
+
+    fun onIncreaseButtonClicked() {
+        mBinding.limitValue = (++counterDataService.limit).toString()
+    }
+
+    fun onDecreaseButtonClicked() {
+        mBinding.limitValue = (--counterDataService.limit).toString()
+    }
+
     fun onSaveButtonClicked() = threadPool.execute { saveButtonCallback(mBinding.limitValue!!.toInt()) }
 
     fun onNoLimitButtonClicked() = threadPool.execute { saveButtonCallback(-1) }
+
 
     fun onCloseButtonClicked() =  finish()
 }

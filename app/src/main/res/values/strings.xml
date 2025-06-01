@@ -9,8 +9,11 @@
     <string name="date_time_text"><u>Date &amp; Time:</u></string>
     <string name="counter_with_data_binding"><u>Counter With DataBinding:</u></string>
     <string name="counter_with_view_binding"><u>Counter With ViewBinding:</u></string>
+    <string name="set_limit_text">Set count of seconds to be saved</string>
 
     <!-- Button Text -->
+    <string name="plus">+</string>
+    <string name="minus">-</string>
     <string name="ok">OK</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
@@ -42,7 +45,6 @@
 
     <!-- Hint -->
     <string name="edit_text_count_hint">Input user count:</string>
-    <string name="edit_text_limit_hint">Input count of seconds:</string>
 
     <!-- Prompt && Messages -->
     <string name="problem_occurred_prompt">Problem occurred</string>
